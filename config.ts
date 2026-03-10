@@ -1,6 +1,7 @@
 import { existsSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { AnyData, AnyObject } from "./types";
 
 const MIN_NODE_VERSION = 24;
 const ROOT_DIR = path.dirname(fileURLToPath(import.meta.url));
@@ -83,10 +84,10 @@ export const OPENROUTER_EXTRA_HEADERS: Record<string, string> = {
 };
 export const EXTRA_API_HEADERS = AI_PROVIDER === "openrouter" ? OPENROUTER_EXTRA_HEADERS : {};
 
-const isPlainObject = (value: unknown): value is Record<string, unknown> =>
+const isPlainObject = (value: AnyData): value is AnyObject =>
   value !== null && typeof value === "object" && !Array.isArray(value);
 
-const ensureTrimmedString = (value: unknown, fieldName: string): string => {
+const ensureTrimmedString = (value: AnyData, fieldName: string): string => {
   if (typeof value !== "string" || !value.trim()) {
     throw new Error(`${fieldName} must be a non-empty string`);
   }
@@ -175,26 +176,26 @@ const normalizeWebSearchConfig = (webSearch: boolean | WebSearchConfig | undefin
 };
 
 
-const addUniqueTool = (tools: unknown, tool: unknown) => {
+const addUniqueTool = (tools: AnyData, tool: AnyData) => {
   if (!Array.isArray(tools) || tools.length === 0) {
     return [tool];
   }
-  const arr = tools as Array<Record<string, unknown>>;
-  const toolRec = typeof tool === 'object' && tool !== null ? tool as Record<string, unknown> : undefined;
+  const arr = tools as Array<AnyObject>;
+  const toolRec = typeof tool === 'object' && tool !== null ? tool as AnyObject : undefined;
   const toolType = toolRec ? toolRec['type'] : undefined;
   if (!toolType) return arr;
-  const exists = arr.some((candidate) => typeof candidate === 'object' && candidate !== null && (candidate as Record<string, unknown>)['type'] === toolType);
+  const exists = arr.some((candidate) => typeof candidate === 'object' && candidate !== null && (candidate as AnyObject)['type'] === toolType);
   return exists ? arr : [...arr, tool];
 };
 
 
-const mergeOpenRouterPlugins = (plugins: unknown, plugin: Record<string, unknown>) => {
+const mergeOpenRouterPlugins = (plugins: AnyData, plugin: AnyObject) => {
   if (!Array.isArray(plugins) || plugins.length === 0) {
     return [plugin];
   }
-  const arr = plugins as Array<Record<string, unknown>>;
+  const arr = plugins as Array<AnyObject>;
   const pluginId = plugin['id'];
-  const existingIndex = arr.findIndex((candidate) => typeof candidate === 'object' && candidate !== null && (candidate as Record<string, unknown>)['id'] === pluginId);
+  const existingIndex = arr.findIndex((candidate) => typeof candidate === 'object' && candidate !== null && (candidate as AnyObject)['id'] === pluginId);
 
   if (existingIndex === -1) {
     return [...arr, plugin];
@@ -206,14 +207,14 @@ const mergeOpenRouterPlugins = (plugins: unknown, plugin: Record<string, unknown
 
 export type BuildResponsesRequestArgs = {
   model: string;
-  tools?: unknown;
-  plugins?: unknown;
+  tools?: AnyData;
+  plugins?: AnyData;
   webSearch?: boolean | WebSearchConfig;
-  [key: string]: unknown;
+  [key: string]: AnyData;
 };
 
 export const buildResponsesRequest = ({ model, tools, plugins, webSearch = false, ...rest }: BuildResponsesRequestArgs) => {
-  const request: Record<string, unknown> = {
+  const request: AnyObject = {
     model: resolveModelForProvider(model),
     ...rest,
   };

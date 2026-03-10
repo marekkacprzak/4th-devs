@@ -4,7 +4,8 @@ import {
   EXTRA_API_HEADERS,
   RESPONSES_API_ENDPOINT,
   resolveModelForProvider,
-} from "../config.js";
+} from "../config.ts";
+import { AnyData } from "../types.ts";
 import {
   buildNextConversation,
   getFinalText,
@@ -21,7 +22,7 @@ type ToolDefinition = {
   type: string;
   name: string;
   description: string;
-  parameters: unknown;
+  parameters: AnyData;
   strict?: boolean;
 };
 
@@ -58,7 +59,7 @@ const tools: ToolDefinition[] = [
   },
 ];
 
-const requireText = (value: unknown, fieldName: string) => {
+const requireText = (value: AnyData, fieldName: string) => {
   if (typeof value !== "string" || !value.trim()) {
     throw new Error(`"${fieldName}" must be a non-empty string.`);
   }
@@ -66,8 +67,8 @@ const requireText = (value: unknown, fieldName: string) => {
   return value.trim();
 };
 
-type HandlerResult = unknown;
-type Handlers = Record<string, (args: unknown) => HandlerResult | Promise<HandlerResult>>;
+type HandlerResult = AnyData;
+type Handlers = Record<string, (args: AnyData) => HandlerResult | Promise<HandlerResult>>;
 
 const handlers: Handlers = {
   get_weather({ location }: { location: string }) {
@@ -95,7 +96,7 @@ const handlers: Handlers = {
   },
 };
 
-const requestResponse = async (input: unknown) => {
+const requestResponse = async (input: AnyData) => {
   const body = buildResponsesRequest({
     model,
     input,
@@ -121,7 +122,7 @@ const requestResponse = async (input: unknown) => {
 
 const MAX_TOOL_STEPS = 5;
 
-const chat = async (conversation: unknown[]) => {
+const chat = async (conversation: AnyData[]) => {
   let currentConversation = conversation;
   let stepsRemaining = MAX_TOOL_STEPS;
 

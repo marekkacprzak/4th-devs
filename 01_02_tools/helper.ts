@@ -1,19 +1,21 @@
+import { AnyData, AnyObject } from "../types.ts";
+
 export type RawToolCall = { type: string; arguments: string; name: string; call_id?: string };
 export type ToolCall = { arguments: string; name: string; call_id?: string };
-export type HandlerFn = (args: unknown) => unknown | Promise<unknown>;
+export type HandlerFn = (args: AnyData) => AnyData | Promise<AnyData>;
 
-export const getToolCalls = (response: unknown): RawToolCall[] => {
+export const getToolCalls = (response: AnyData): RawToolCall[] => {
   if (typeof response !== "object" || response === null) return [];
-  const out = (response as Record<string, unknown>)['output'];
+  const out = (response as AnyObject)['output'];
   if (!Array.isArray(out)) return [];
   return out
-    .filter((item): item is Record<string, unknown> => {
+    .filter((item): item is AnyObject => {
       if (typeof item !== 'object' || item === null) return false;
-      const t = (item as Record<string, unknown>)['type'];
+      const t = (item as AnyObject)['type'];
       return typeof t === 'string' && t === 'function_call';
     })
     .map((item) => {
-      const rec = item as Record<string, unknown>;
+      const rec = item as AnyObject;
       const args = typeof rec['arguments'] === 'string' ? (rec['arguments'] as string) : JSON.stringify(rec['arguments'] ?? '');
       const name = typeof rec['name'] === 'string' ? (rec['name'] as string) : String(rec['name'] ?? '');
       const call_id = typeof rec['call_id'] === 'string' ? (rec['call_id'] as string) : undefined;
@@ -22,18 +24,18 @@ export const getToolCalls = (response: unknown): RawToolCall[] => {
     });
 };
 
-export const getFinalText = (response: unknown): string => {
+export const getFinalText = (response: AnyData): string => {
   if (typeof response !== 'object' || response === null) return 'No response';
-  const resp = response as Record<string, unknown>;
+  const resp = response as AnyObject;
   if (typeof resp.output_text === 'string') return resp.output_text;
   const msg = Array.isArray(resp.output)
     ? resp.output.find((item) => {
       if (typeof item !== 'object' || item === null) return false;
-      const t = (item as Record<string, unknown>)['type'];
+      const t = (item as AnyObject)['type'];
       return typeof t === 'string' && t === 'message';
-    }) as Record<string, unknown> | undefined
+    }) as AnyObject | undefined
     : undefined;
-  const text = msg?.content && Array.isArray(msg.content) ? (msg.content[0] as Record<string, unknown>)['text'] : undefined;
+  const text = msg?.content && Array.isArray(msg.content) ? (msg.content[0] as AnyObject)['text'] : undefined;
   return typeof text === 'string' ? text : 'No response';
 };
 
@@ -60,19 +62,19 @@ const colorize = (text: string, ...styles: string[]) => {
 };
 
 const label = (text: string, color: string) => colorize(`[${text}]`, "bold", color);
-const formatJson = (value: unknown) => JSON.stringify(value, null, 2);
+const formatJson = (value: AnyData) => JSON.stringify(value, null, 2);
 
 export const logQuestion = (text: string) => {
   console.log(`${label("USER", "blue")} ${text}\n`);
 };
 
-export const logToolCall = (name: string, args: unknown) => {
+export const logToolCall = (name: string, args: AnyData) => {
   console.log(`${label("TOOL", "magenta")} ${colorize(name, "bold")}`);
   console.log(colorize("Arguments:", "cyan"));
   console.log(colorize(formatJson(args), "dim"));
 };
 
-export const logToolResult = (result: unknown) => {
+export const logToolResult = (result: AnyData) => {
   console.log(colorize("Result:", "yellow"));
   console.log(colorize(formatJson(result), "dim"));
   console.log("");
@@ -83,7 +85,7 @@ export const logAnswer = (text: string) => {
 };
 
 export const executeToolCall = async (call: RawToolCall, handlers: Record<string, HandlerFn>) => {
-  const args = JSON.parse(call.arguments) as unknown;
+  const args = JSON.parse(call.arguments) as AnyData;
   const handler = handlers[call.name];
 
   if (!handler) {
@@ -101,7 +103,7 @@ export const executeToolCall = async (call: RawToolCall, handlers: Record<string
   };
 };
 
-export const buildNextConversation = async (conversation: unknown[], toolCalls: RawToolCall[], handlers: Record<string, HandlerFn>) => {
+export const buildNextConversation = async (conversation: AnyData[], toolCalls: RawToolCall[], handlers: Record<string, HandlerFn>) => {
   const toolResults = await Promise.all(
     toolCalls.map((call) => executeToolCall(call, handlers)),
   );
