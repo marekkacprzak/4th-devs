@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": ">=24"
+    "node": ">=24.14.0"
   },
   "scripts": {
     "lesson1:install": "npm install --prefix ./01_01_interaction && npm install --prefix ./01_01_structured && npm install --prefix ./01_01_grounding",
@@ -13,6 +13,7 @@
     "lesson2:install": "npm install --prefix ./01_02_tool_use",
     "lesson2:tool_use": "node ./01_02_tool_use/app.js",
     "lesson2:tools": "node ./01_02_tools/app.js",
+    "lesson2:tools:ts": "bun ./01_02_tools/app.ts",
     "lesson2:minimal": "node ./01_02_tools/app.js",
     "lesson3:install": "npm install --prefix ./mcp/files-mcp && npm install --prefix ./01_03_mcp_core && npm install --prefix ./01_03_mcp_native && npm install --prefix ./01_03_mcp_translator && npm install --prefix ./01_03_upload_mcp",
     "lesson3:mcp_core": "node ./01_03_mcp_core/app.js",
@@ -32,6 +33,14 @@
     "lesson5:confirmation": "node ./01_05_confirmation/app.js",
     "lesson5:agent": "npm run --prefix ./01_05_agent start",
     "lesson5:agent:db:push": "npm run --prefix ./01_05_agent db:push",
-    "lesson5:agent:db:seed": "npm run --prefix ./01_05_agent db:seed"
+    "lesson5:agent:db:seed": "npm run --prefix ./01_05_agent db:seed",
+    "lint": "eslint \"**/*.{ts,js}\" --ext .ts,.js --max-warnings=0"
+  },
+  "devDependencies": {
+    "typescript": "5.3.3",
+    "eslint": "^8.46.0",
+    "@typescript-eslint/parser": "^6.5.0",
+    "@typescript-eslint/eslint-plugin": "^6.5.0",
+    "@types/node": "^20.9.5"
   }
 }
