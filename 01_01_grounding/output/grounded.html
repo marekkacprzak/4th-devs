@@ -278,6 +278,14 @@
       visibility: visible;
     }
 
+    /* Measuring state: used to compute size while hidden */
+    .tooltip.measuring {
+      visibility: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      transform: none !important;
+    }
+
     /* Tooltip arrow */
     .tooltip-arrow {
       position: absolute;
@@ -1048,9 +1056,14 @@
   function positionTooltip(target) {
     // Skip positioning on mobile (uses CSS bottom sheet)
     if (isMobile()) return;
-
     const rect = target.getBoundingClientRect();
+
+    // Ensure we measure the tooltip's real size even when it's hidden.
+    // Add a temporary measuring class that removes transforms/animations
+    // so getBoundingClientRect returns the true width/height.
+    tooltip.classList.add('measuring');
     const tooltipRect = tooltip.getBoundingClientRect();
+    tooltip.classList.remove('measuring');
     const padding = 16;
     const arrowSize = 12;
     
@@ -1071,7 +1084,7 @@
       left = window.innerWidth - tooltipRect.width - padding;
     }
     
-    // Arrow position
+    // Arrow position (keep it within tooltip bounds)
     const arrowLeft = Math.min(
       Math.max(rect.left + rect.width / 2 - left - arrowSize / 2, 20),
       tooltipRect.width - 40
