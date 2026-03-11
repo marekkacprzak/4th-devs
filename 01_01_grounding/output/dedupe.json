@@ -1,203 +1,171 @@
 {
-  "sourceFile": "/Users/overment/playground/devs/01_01_grounding/notes/crypto.md",
-  "model": "openai/gpt-5.4",
+  "sourceFile": "/Users/slipper/Nauka/4th-devs/01_01_grounding/notes/crypto.md",
+  "model": "gpt-5.4",
   "sourceHash": "77f9f11488f95cf87bf90af42729684b52c9dd8e2bcf7e4fde758f6c46f722da",
-  "conceptsHash": "c04c37da3fe0aceba05b1fcbcde6f5f768d55d7894166357c6309e0f0d7d30a5",
+  "conceptsHash": "d83861abe4df865fa8abc6a96412d62aaa4f430ed89af03f9f698725e4deca9c",
   "paragraphCount": 13,
-  "conceptCount": 30,
-  "dedupeHash": "ca563b6908434e28ec339589d3ccdbefe1b7f3f5196a09bac453e8b07ddd4d3e",
+  "conceptCount": 31,
+  "dedupeHash": "910270777c69e3b822fa86b17e4f4b6855fcae70e6368e5e687423fb8c226ce2",
   "groups": [
     {
-      "canonical": "Bitcoin: A Peer-to-Peer Electronic Cash System whitepaper",
+      "canonical": "Decentralized digital currency without intermediaries",
       "ids": [
         1
       ],
-      "aliases": [
-        "Bitcoin whitepaper \"Bitcoin: A Peer-to-Peer Electronic Cash System\""
-      ],
-      "rationale": "Unique reference to a specific document title; no strict paraphrase match in the list."
+      "aliases": [],
+      "rationale": "Unique definition; no other definition is a strict paraphrase of this concept."
     },
     {
-      "canonical": "Bitcoin created in 2008 by Satoshi Nakamoto",
+      "canonical": "Bitcoin: A Peer-to-Peer Electronic Cash System",
       "ids": [
         2
       ],
       "aliases": [],
-      "rationale": "Distinct historical claim about Bitcoin's origin and creator; not a strict paraphrase of any other item."
+      "rationale": "Unique reference title; no other reference is the same work."
     },
     {
-      "canonical": "Bitcoin as decentralized digital currency without central banks or intermediaries",
+      "canonical": "Bitcoin creation by Satoshi Nakamoto in 2008",
       "ids": [
         3
       ],
       "aliases": [],
-      "rationale": "Distinct characterization claim about Bitcoin's nature; no same-category paraphrase present."
+      "rationale": "Unique historical claim; no other claim states the same proposition."
     },
     {
-      "canonical": "Bitcoin blockchain throughput around 7 transactions per second",
+      "canonical": "Satoshi Nakamoto",
       "ids": [
-        5
+        4
       ],
       "aliases": [],
-      "rationale": "Distinct metric about Bitcoin throughput; not equivalent to any other metric."
+      "rationale": "Unique entity; not strictly equivalent to any claim or reference."
     },
     {
-      "canonical": "Visa throughput around 24,000 transactions per second",
+      "canonical": "Bitcoin vs Visa transaction throughput",
       "ids": [
         6
       ],
       "aliases": [],
-      "rationale": "Distinct metric about Visa throughput; no strict paraphrase counterpart."
+      "rationale": "Unique comparative claim; no other claim is a strict paraphrase."
     },
     {
-      "canonical": "Hash-linked blocks forming an immutable chain",
-      "ids": [
-        7
-      ],
-      "aliases": [],
-      "rationale": "Distinct definition of blockchain structure; not a strict paraphrase of another definition."
-    },
-    {
-      "canonical": "Bitcoin block subsidy started at 50 BTC and halves about every four years",
+      "canonical": "Bitcoin block reward halving schedule",
       "ids": [
         9
       ],
       "aliases": [],
-      "rationale": "Distinct quantitative issuance metric; no equivalent metric in the list."
+      "rationale": "Unique claim about reward timing and amount; distinct from mining process."
     },
     {
-      "canonical": "Bitcoin Proof of Work consensus mechanism",
+      "canonical": "Block mining reward process",
       "ids": [
         10
       ],
       "aliases": [],
-      "rationale": "Distinct method naming Bitcoin's consensus mechanism; not the same claim as mining-process descriptions."
+      "rationale": "Unique method description; not the same as any reward-schedule claim."
     },
     {
-      "canonical": "Miners compete to solve cryptographic puzzles",
-      "ids": [
-        11
-      ],
-      "aliases": [],
-      "rationale": "Distinct method describing miner behavior; related to Proof of Work but not a strict paraphrase."
-    },
-    {
-      "canonical": "Block reward for adding the next block",
-      "ids": [
-        12
-      ],
-      "aliases": [],
-      "rationale": "Distinct claim about block addition and rewards; not equivalent to subsidy schedule or mining method entries."
-    },
-    {
-      "canonical": "Ethereum proposed by Vitalik Buterin in 2013 and launched in 2015",
+      "canonical": "Ethereum founding and launch timeline",
       "ids": [
         14
       ],
       "aliases": [],
-      "rationale": "Distinct historical claim about Ethereum's proposal and launch dates; no strict paraphrase match."
+      "rationale": "Unique historical claim; no other item states the same timeline."
     },
     {
-      "canonical": "Smart contracts as self-executing programs on the blockchain that enforce agreements when conditions are met",
-      "ids": [
-        15
-      ],
-      "aliases": [],
-      "rationale": "Distinct definition of smart contracts; no equivalent definition present."
-    },
-    {
-      "canonical": "Ethereum energy consumption reduced by ~99.95% after The Merge",
+      "canonical": "Smart contract",
       "ids": [
         16
       ],
-      "aliases": [
-        "Ethereum energy consumption reduced by ~99.95% after The Merge (Ethereum Foundation claim)"
-      ],
-      "rationale": "Distinct result about post-Merge energy reduction; not the same as the Merge event itself."
+      "aliases": [],
+      "rationale": "Unique definition term; no other definition is a strict paraphrase."
     },
     {
-      "canonical": "Ethereum The Merge transition to Proof of Stake in September 2022",
+      "canonical": "Ethereum transition to Proof of Stake via The Merge",
       "ids": [
         17
       ],
-      "aliases": [
-        "Ethereum 'The Merge' transition to Proof of Stake (September 2022)"
-      ],
-      "rationale": "Distinct claim about a dated protocol transition; related to but not the same as its energy-consumption result."
+      "aliases": [],
+      "rationale": "Unique protocol-change claim; distinct from its energy-consumption outcome."
     },
     {
-      "canonical": "Total value locked in DeFi protocols peak",
+      "canonical": "Post-Merge Ethereum energy consumption reduction",
+      "ids": [
+        18
+      ],
+      "aliases": [],
+      "rationale": "Unique result claim; not equivalent to the transition event itself."
+    },
+    {
+      "canonical": "Subsequent decline in DeFi TVL",
       "ids": [
         20
       ],
-      "aliases": [
-        "Total value locked (TVL) in DeFi protocols peak"
-      ],
-      "rationale": "Distinct metric about DeFi TVL peak; not a paraphrase of the later decline result."
-    },
-    {
-      "canonical": "Decentralized finance (DeFi) applications",
-      "ids": [
-        21
-      ],
       "aliases": [],
-      "rationale": "Distinct definition of DeFi applications; no strict paraphrase equivalent."
+      "rationale": "Unique result; distinct from the earlier TVL peak and from the TVL metric."
     },
     {
-      "canonical": "Post-2021 decline in DeFi total value locked",
+      "canonical": "DeFi TVL peak in late 2021",
       "ids": [
         22
       ],
       "aliases": [],
-      "rationale": "Distinct result describing a decline in TVL; not equivalent to the TVL peak metric."
+      "rationale": "Unique historical claim; not a paraphrase of the later decline."
     },
     {
-      "canonical": "Uniswap pioneered the automated market maker (AMM) model",
+      "canonical": "Total value locked (TVL)",
       "ids": [
         23
       ],
       "aliases": [],
-      "rationale": "Distinct historical claim about Uniswap's role in AMMs; no strict paraphrase present."
+      "rationale": "Unique metric term; different category from claims about its movement."
     },
     {
-      "canonical": "Uniswap trading volume over $1.8 trillion since launch",
+      "canonical": "Uniswap pioneered the automated market maker model",
       "ids": [
         24
       ],
       "aliases": [],
-      "rationale": "Distinct cumulative volume metric; not equivalent to launch year or AMM mechanism items."
+      "rationale": "Unique historical claim; distinct from the AMM definition and Uniswap volume result."
     },
     {
-      "canonical": "Uniswap launch year (2018)",
+      "canonical": "Uniswap trading volume since launch",
       "ids": [
         25
       ],
       "aliases": [],
-      "rationale": "Distinct historical claim about Uniswap's launch timing; no strict paraphrase match."
+      "rationale": "Unique quantitative result; no other result states the same fact."
     },
     {
-      "canonical": "AMM liquidity pools funded by liquidity providers depositing token pairs",
+      "canonical": "Automated market maker model",
       "ids": [
         26
       ],
       "aliases": [],
-      "rationale": "Distinct definition of the AMM liquidity-pool mechanism; not the same as claims about Uniswap history or volume."
+      "rationale": "Unique definition; not equivalent to claims about Uniswap pioneering it."
     },
     {
-      "canonical": "SEC v. Ripple (2023) ruling on programmatic token sales not necessarily being securities transactions",
+      "canonical": "SEC classification of cryptocurrencies as securities with Bitcoin and Ethereum exceptions",
       "ids": [
         28
       ],
       "aliases": [],
-      "rationale": "Distinct legal result tied to a specific case; not equivalent to broader SEC classification claims."
+      "rationale": "Unique regulatory claim; distinct from the Ripple case outcome."
     },
     {
-      "canonical": "SEC classification of most cryptocurrencies as securities with exceptions for Bitcoin and Ethereum",
+      "canonical": "Programmatic token sales on exchanges not necessarily securities transactions",
       "ids": [
         29
       ],
       "aliases": [],
-      "rationale": "Distinct regulatory claim about SEC classification; related to but not a strict paraphrase of the Ripple ruling."
+      "rationale": "Unique legal-result claim; not the same as the case citation or broader SEC classification claim."
+    },
+    {
+      "canonical": "SEC v. Ripple",
+      "ids": [
+        30
+      ],
+      "aliases": [],
+      "rationale": "Unique legal reference; distinct from the ruling's substantive outcome."
     }
   ]
 }
