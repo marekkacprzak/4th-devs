@@ -3,7 +3,7 @@ import {
   EXTRA_API_HEADERS,
   RESPONSES_API_ENDPOINT,
   resolveModelForProvider
-} from "../config.js";
+} from "../config.ts";
 import { extractResponseText, toMessage } from "./helpers.ts";
 import type { ErrorLike, ChatResult, Message, ResponseObject } from "./types.ts";
 
