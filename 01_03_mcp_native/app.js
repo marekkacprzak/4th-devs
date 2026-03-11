@@ -13,7 +13,7 @@ import { createAgent } from "./src/agent.js";
 import { MCP_LABEL, NATIVE_LABEL } from "./src/log.js";
 import { resolveModelForProvider } from "../config.js";
 
-const model = resolveModelForProvider("gpt-5.2");
+const model = resolveModelForProvider("gpt-5-mini");
 const instructions = `You are a helpful assistant with access to various tools.
 You can check weather, get time, perform calculations, and transform text.
 Use the appropriate tool for each task. Be concise.`;
