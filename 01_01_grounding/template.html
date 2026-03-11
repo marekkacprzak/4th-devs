@@ -270,7 +270,13 @@
       visibility: hidden;
       overflow: hidden;
     }
-
+    /* Measuring state: used to compute size while hidden */
+    .tooltip.measuring {
+      visibility: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      transform: none !important;
+    }
     .tooltip.visible {
       opacity: 1;
       transform: translateY(0) scale(1);
@@ -1026,7 +1032,9 @@
     if (isMobile()) return;
 
     const rect = target.getBoundingClientRect();
+    tooltip.classList.add('measuring');
     const tooltipRect = tooltip.getBoundingClientRect();
+    tooltip.classList.remove('measuring');
     const padding = 16;
     const arrowSize = 12;
     
