@@ -1,0 +1,16 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "pwa-node",
+      "request": "launch",
+      "name": "Launch 01_03_mcp_native",
+      "program": "${workspaceFolder}/01_03_mcp_native/app.js",
+      "cwd": "${workspaceFolder}/01_03_mcp_native",
+      "console": "integratedTerminal",
+      "runtimeExecutable": "node",
+      "env": {},
+      "skipFiles": ["<node_internals>/**"]
+    }
+  ]
+}
