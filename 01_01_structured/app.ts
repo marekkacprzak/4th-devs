@@ -3,12 +3,13 @@ import {
   EXTRA_API_HEADERS,
   RESPONSES_API_ENDPOINT,
   resolveModelForProvider
-} from "../config.js";
-import { extractResponseText } from "./helpers.js";
+} from "../config.ts";
+import { extractResponseText } from "./helpers.ts";
+import type { ResponseObject, ErrorLike } from "./types.ts";
 
-const MODEL = resolveModelForProvider("gpt-5.4");
+const MODEL = resolveModelForProvider("gpt-4.1");
 
-async function extractPerson(text) {
+async function extractPerson(text: string) {
   const response = await fetch(RESPONSES_API_ENDPOINT, {
     method: "POST",
     headers: {
@@ -23,10 +24,15 @@ async function extractPerson(text) {
     })
   });
 
-  const data = await response.json();
+  const data = (await response.json()) as ResponseObject;
 
   if (!response.ok || data.error) {
-    const message = data?.error?.message ?? `Request failed with status ${response.status}`;
+    let message: string;
+    if (typeof data.error === "object" && data.error !== null && "message" in data.error) {
+      message = String((data.error as { message?: unknown }).message ?? `Request failed with status ${response.status}`);
+    } else {
+      message = String(data.error ?? `Request failed with status ${response.status}`);
+    }
     throw new Error(message);
   }
 
@@ -69,7 +75,7 @@ const personSchema = {
   }
 };
 
-async function main() {
+async function main(): Promise<void> {
   const text = "John is 30 years old and works as a software engineer. He is skilled in JavaScript, Python, and React.";
   const person = await extractPerson(text);
 
@@ -79,7 +85,7 @@ async function main() {
   console.log("Skills:", person.skills.length ? person.skills.join(", ") : "none");
 }
 
-main().catch((error) => {
-  console.error(`Error: ${error.message}`);
+main().catch((error: ErrorLike) => {
+  console.error(`Error: ${error?.message}`);
   process.exit(1);
 });
