@@ -4,11 +4,12 @@ import {
   RESPONSES_API_ENDPOINT,
   resolveModelForProvider
 } from "../config.js";
-import { extractResponseText, toMessage } from "./helpers.js";
+import { extractResponseText, toMessage } from "./helpers.ts";
+import type { ErrorLike, ChatResult, Message, ResponseObject } from "./types.ts";
 
 const MODEL = resolveModelForProvider("gpt-5.2");
 
-async function chat(input, history = []) {
+export async function chat(input: string, history: Message[] = []): Promise<ChatResult> {
   const response = await fetch(RESPONSES_API_ENDPOINT, {
     method: "POST",
     headers: {
@@ -23,7 +24,8 @@ async function chat(input, history = []) {
     })
   });
 
-  const data = await response.json();
+  const data = (await response.json()) as ResponseObject;
+  //logStructure("responses_api.data", data);
 
   if (!response.ok || data.error) {
     const message = data?.error?.message ?? `Request failed with status ${response.status}`;
@@ -38,16 +40,16 @@ async function chat(input, history = []) {
 
   return {
     text,
-    reasoningTokens: data?.usage?.output_tokens_details?.reasoning_tokens ?? 0
+    reasoningTokens: (data?.usage?.output_tokens_details?.reasoning_tokens as number) ?? 0
   };
 }
 
-async function main() {
+async function main(): Promise<void> {
   const firstQuestion = "What is 25 * 48?";
   const firstAnswer = await chat(firstQuestion);
 
   const secondQuestion = "Divide that by 4.";
-  const secondQuestionContext = [
+  const secondQuestionContext: Message[] = [
     {
       type: "message",
       role: "user",
@@ -67,7 +69,8 @@ async function main() {
   console.log("A:", secondAnswer.text, `(${secondAnswer.reasoningTokens} reasoning tokens)`);
 }
 
-main().catch((error) => {
-  console.error(`Error: ${error.message}`);
+main().catch((error: ErrorLike) => {
+  //logStructure("main.error", error);
+  console.error(`Error: ${error?.message}`);
   process.exit(1);
 });
