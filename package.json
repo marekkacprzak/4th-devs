@@ -34,13 +34,16 @@
     "lesson5:agent": "npm run --prefix ./01_05_agent start",
     "lesson5:agent:db:push": "npm run --prefix ./01_05_agent db:push",
     "lesson5:agent:db:seed": "npm run --prefix ./01_05_agent db:seed",
-    "lint": "eslint \"**/*.{ts,js}\" --ext .ts,.js --max-warnings=0"
+    "lesson19:system": "node ./04_04_system/app.js",
+    "lesson19:daily-news": "node ./04_04_system/demo-daily-news.js",
+    "lesson19:examples": "node ./04_04_system/demo-example-queries.js"  
   },
   "devDependencies": {
     "typescript": "5.3.3",
     "eslint": "^8.46.0",
     "@typescript-eslint/parser": "^6.5.0",
     "@typescript-eslint/eslint-plugin": "^6.5.0",
-    "@types/node": "^20.9.5"
+    "@types/node": "^20.9.5",
+    "lint": "eslint \"**/*.{ts,js}\" --ext .ts,.js --max-warnings=0"
   }
 }
