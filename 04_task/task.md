@@ -67,3 +67,9 @@ zadanie 2 task - ktorego wynik podales w finish.json wyslalem do weryfikacji i d
     "code": -760,
     "message": "The shipment will not fit on the train."
 } - popraw json by nie bylo tego bledu
+
+
+{
+    "code": 0,
+    "message": "{FLG:WISDOM}"
+}
