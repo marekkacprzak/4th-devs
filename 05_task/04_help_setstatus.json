@@ -1,0 +1,9 @@
+{
+  "apikey": "<HUB_API_KEY>",
+  "task": "railway",
+  "answer": {
+    "action": "setstatus",
+     "route" : "X-01" ,
+     "value": "RTOPEN"
+  }
+}
