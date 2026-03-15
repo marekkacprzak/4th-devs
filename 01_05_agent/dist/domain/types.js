@@ -1,4 +1,0 @@
-/**
- * Core domain types
- */
-export {};
