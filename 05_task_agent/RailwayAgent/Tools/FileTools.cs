@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using RailwayAgent.UI;
 
 namespace RailwayAgent.Tools;
 
@@ -15,9 +16,7 @@ public class FileTools
     public string ReadFile(
         [Description("File path relative to project root, e.g. 'trasy_wylaczone.csv'")] string path)
     {
-        Console.ForegroundColor = ConsoleColor.Cyan;
-        Console.WriteLine($"[Tool] ReadFile(path={path})");
-        Console.ResetColor();
+        ConsoleUI.PrintToolCall("ReadFile", $"path={path}");
 
         var fullPath = Path.GetFullPath(Path.Combine(_basePath, path));
 

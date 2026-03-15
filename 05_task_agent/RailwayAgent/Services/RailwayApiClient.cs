@@ -2,6 +2,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using RailwayAgent.Config;
+using RailwayAgent.UI;
 
 namespace RailwayAgent.Services;
 
@@ -41,9 +42,7 @@ public class RailwayApiClient
             // Wait for rate limit before sending
             await WaitForRateLimit();
 
-            Console.ForegroundColor = ConsoleColor.DarkGray;
-            Console.WriteLine($"  [API] Request (attempt {attempt}/{_config.MaxRetries}): {json}");
-            Console.ResetColor();
+            ConsoleUI.PrintApiRequest(attempt, _config.MaxRetries, json);
 
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             HttpResponseMessage response;
@@ -54,9 +53,7 @@ public class RailwayApiClient
             }
             catch (Exception ex)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"  [API] Network error: {ex.Message}");
-                Console.ResetColor();
+                ConsoleUI.PrintError($"Network error: {ex.Message}");
                 await DelayBeforeRetry(attempt);
                 continue;
             }
@@ -66,16 +63,12 @@ public class RailwayApiClient
             // Update rate limit state from headers and body
             UpdateRateLimitState(response, responseBody);
 
-            Console.ForegroundColor = ConsoleColor.DarkGray;
-            Console.WriteLine($"  [API] Response ({(int)response.StatusCode}): {responseBody}");
-            Console.ResetColor();
+            ConsoleUI.PrintApiResponse((int)response.StatusCode, responseBody);
 
             // Auto-retry on 503 (simulated outage)
             if (response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable)
             {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine($"  [API] 503 Service Unavailable - retrying...");
-                Console.ResetColor();
+                ConsoleUI.PrintRetry("503 Service Unavailable - retrying...");
                 await DelayBeforeRetry(attempt);
                 continue;
             }
@@ -83,9 +76,7 @@ public class RailwayApiClient
             // Auto-retry on 429 (rate limit) - don't return error to agent
             if (response.StatusCode == (System.Net.HttpStatusCode)429)
             {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine($"  [API] 429 Rate limited - will auto-retry after waiting...");
-                Console.ResetColor();
+                ConsoleUI.PrintRetry("429 Rate limited - will auto-retry after waiting...");
                 continue;
             }
 
@@ -106,9 +97,7 @@ public class RailwayApiClient
         if (_nextAllowedCall > now)
         {
             var waitMs = (int)(_nextAllowedCall - now).TotalMilliseconds;
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine($"  [API] Rate limit: waiting {waitMs}ms until next allowed call...");
-            Console.ResetColor();
+            ConsoleUI.PrintRateLimit(waitMs);
             await Task.Delay(waitMs);
         }
     }
@@ -164,9 +153,7 @@ public class RailwayApiClient
         {
             _nextAllowedCall = nextCall.Value;
             var waitMs = (int)(nextCall.Value - now).TotalMilliseconds;
-            Console.ForegroundColor = ConsoleColor.DarkGray;
-            Console.WriteLine($"  [API] Next call allowed in {waitMs}ms (at {nextCall.Value:HH:mm:ss})");
-            Console.ResetColor();
+            ConsoleUI.PrintInfo($"Next call allowed in {waitMs}ms (at {nextCall.Value:HH:mm:ss})");
         }
     }
 
@@ -184,9 +171,7 @@ public class RailwayApiClient
                 delay = rateLimitDelay;
         }
 
-        Console.ForegroundColor = ConsoleColor.DarkGray;
-        Console.WriteLine($"  [API] Waiting {delay}ms before retry...");
-        Console.ResetColor();
+        ConsoleUI.PrintInfo($"Waiting {delay}ms before retry...");
         await Task.Delay(delay);
     }
 }
