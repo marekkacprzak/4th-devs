@@ -4,6 +4,7 @@ using RailwayAgent.Adapters;
 using RailwayAgent.Config;
 using RailwayAgent.Services;
 using RailwayAgent.Tools;
+using RailwayAgent.UI;
 
 // 1. Load configuration
 var configuration = new ConfigurationBuilder()
@@ -62,16 +63,8 @@ var instructions = """
 var agent = OpenAiClientFactory.CreateAgent(agentConfig, instructions, tools);
 
 // 5. Run agent
-Console.ForegroundColor = ConsoleColor.Green;
-Console.WriteLine("=== Railway Agent Started ===");
-Console.WriteLine($"Provider: {agentConfig.Provider} | Model: {agentConfig.Model}");
-Console.WriteLine();
-Console.ResetColor();
+ConsoleUI.PrintBanner("RAILWAY", $"Provider: {agentConfig.Provider} | Model: {agentConfig.Model}");
 
 var result = await agent.RunAsync("Activate railway route X-01 by changing its status to RTOPEN. Follow the workflow: reconfigure -> setstatus -> save.");
 
-Console.WriteLine();
-Console.ForegroundColor = ConsoleColor.Green;
-Console.WriteLine("=== Agent Result ===");
-Console.ResetColor();
-Console.WriteLine(result);
+ConsoleUI.PrintResult(result.ToString());
