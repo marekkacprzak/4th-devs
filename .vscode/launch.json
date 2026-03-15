@@ -11,6 +11,38 @@
       "runtimeExecutable": "node",
       "env": {},
       "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "type": "pwa-node",
+      "request": "launch",
+      "name": "Launch 01_05_agent (bun)",
+      "program": "${workspaceFolder}/01_05_agent/src/index.ts",
+      "cwd": "${workspaceFolder}/01_05_agent",
+      "console": "integratedTerminal",
+      "runtimeExecutable": "bun",
+      "env": {},
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "type": "pwa-node",
+      "request": "attach",
+      "name": "Attach to Bun (Inspector)",
+      "port": 9229,
+      "address": "localhost",
+      "cwd": "${workspaceFolder}/01_05_agent",
+      "localRoot": "${workspaceFolder}/01_05_agent",
+      "remoteRoot": "${workspaceFolder}/01_05_agent",
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "type": "pwa-node",
+      "request": "launch",
+      "name": "Launch 01_05_agent (tsx)",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["exec", "tsx", "src/index.ts"],
+      "cwd": "${workspaceFolder}/01_05_agent",
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**"]
     }
   ]
 }

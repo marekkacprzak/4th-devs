@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__query-docs",
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(dotnet new:*)",
+      "Read(//usr/local/share/dotnet/**)",
+      "Read(//opt/homebrew/bin/**)",
+      "Read(//usr/local/**)",
+      "Bash(/usr/local/share/dotnet/dotnet --version)",
+      "Bash(/usr/local/share/dotnet/dotnet new:*)",
+      "Bash(cd:*)",
+      "Bash(/usr/local/share/dotnet/dotnet build:*)",
+      "Bash(/usr/local/share/dotnet/dotnet add:*)",
+      "Bash(/usr/local/share/dotnet/dotnet run:*)"
+    ]
+  }
+}
