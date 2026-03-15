@@ -15,7 +15,8 @@
       "Bash(cd:*)",
       "Bash(/usr/local/share/dotnet/dotnet build:*)",
       "Bash(/usr/local/share/dotnet/dotnet add:*)",
-      "Bash(/usr/local/share/dotnet/dotnet run:*)"
+      "Bash(/usr/local/share/dotnet/dotnet run:*)",
+      "Bash(curl:*)"
     ]
   }
 }
