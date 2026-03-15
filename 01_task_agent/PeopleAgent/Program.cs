@@ -174,6 +174,14 @@ if (transportPeople.Count == 0)
     return;
 }
 
+// --- STEP 5b: Export suspects for next task ---
+ConsoleUI.PrintStep("STEP 5b: Export suspects to JSON");
+var suspects = transportPeople.Select(p => new { p.Name, p.Surname, BirthYear = p.Born }).ToList();
+var suspectsJson = JsonSerializer.Serialize(suspects, new JsonSerializerOptions { WriteIndented = true, PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+var exportPath = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "02_task_agent", "suspects.json"));
+await File.WriteAllTextAsync(exportPath, suspectsJson);
+ConsoleUI.PrintInfo($"Exported {suspects.Count} suspects to {exportPath}");
+
 // --- STEP 6: Submit to Hub ---
 ConsoleUI.PrintStep("STEP 6: Submit to Hub API");
 
