@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using RailwayAgent.Services;
+using RailwayAgent.UI;
 
 namespace RailwayAgent.Tools;
 
@@ -15,9 +16,7 @@ public class RailwayApiTools
     [Description("Show available Railway API actions, parameters, and documentation")]
     public async Task<string> Help()
     {
-        Console.ForegroundColor = ConsoleColor.Cyan;
-        Console.WriteLine("[Tool] Help()");
-        Console.ResetColor();
+        ConsoleUI.PrintToolCall("Help");
 
         return await _api.SendAsync(new Dictionary<string, string>
         {
@@ -29,9 +28,7 @@ public class RailwayApiTools
     public async Task<string> Reconfigure(
         [Description("Route code in format like x-01, x-02 etc.")] string route)
     {
-        Console.ForegroundColor = ConsoleColor.Cyan;
-        Console.WriteLine($"[Tool] Reconfigure(route={route})");
-        Console.ResetColor();
+        ConsoleUI.PrintToolCall("Reconfigure", $"route={route}");
 
         return await _api.SendAsync(new Dictionary<string, string>
         {
@@ -44,9 +41,7 @@ public class RailwayApiTools
     public async Task<string> GetStatus(
         [Description("Route code in format like x-01, x-02 etc.")] string route)
     {
-        Console.ForegroundColor = ConsoleColor.Cyan;
-        Console.WriteLine($"[Tool] GetStatus(route={route})");
-        Console.ResetColor();
+        ConsoleUI.PrintToolCall("GetStatus", $"route={route}");
 
         return await _api.SendAsync(new Dictionary<string, string>
         {
@@ -60,9 +55,7 @@ public class RailwayApiTools
         [Description("Route code in format like x-01, x-02 etc.")] string route,
         [Description("Status value: RTOPEN (to open) or RTCLOSE (to close)")] string value)
     {
-        Console.ForegroundColor = ConsoleColor.Cyan;
-        Console.WriteLine($"[Tool] SetStatus(route={route}, value={value})");
-        Console.ResetColor();
+        ConsoleUI.PrintToolCall("SetStatus", $"route={route}, value={value}");
 
         return await _api.SendAsync(new Dictionary<string, string>
         {
@@ -76,9 +69,7 @@ public class RailwayApiTools
     public async Task<string> Save(
         [Description("Route code in format like x-01, x-02 etc.")] string route)
     {
-        Console.ForegroundColor = ConsoleColor.Cyan;
-        Console.WriteLine($"[Tool] Save(route={route})");
-        Console.ResetColor();
+        ConsoleUI.PrintToolCall("Save", $"route={route}");
 
         return await _api.SendAsync(new Dictionary<string, string>
         {

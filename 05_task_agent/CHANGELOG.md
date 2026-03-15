@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 2026-03-15 - Console UI z Spectre.Console
+- Dodano Spectre.Console 0.54.0 do projektu
+- Nowa klasa `UI/ConsoleUI.cs` z 9 metodami formatowania (FigletText, Panel, Rule, Markup)
+- ASCII banner "RAILWAY" na starcie agenta
+- Panele z ramkami i kolorami dla tool calls, API request/response, errors, rate limits
+- Usunięto wszystkie ręczne `Console.ForegroundColor` / `Console.ResetColor` bloki
+
 ## 2026-03-15 - Dynamiczny rate limit
 - Auto-retry na 429 - agent nie widzi rate limit errors (oszczędność tokenów)
 - Dynamiczny delay na podstawie nagłówków: `retry-after`, `x-ratelimit-reset`, `retry_after` (body)
