@@ -8,26 +8,53 @@ namespace PeopleAgent.Adapters;
 
 public static class OpenAiClientFactory
 {
-    public static AIAgent CreateAgent(AgentConfig config, string instructions, IEnumerable<AITool> tools)
+    public static AIAgent CreateAgent(
+        AgentConfig config,
+        string instructions,
+        IEnumerable<AITool> tools,
+        TelemetryConfig? telemetryConfig = null)
     {
         var client = CreateOpenAiClient(config);
 
-        return client
-            .GetChatClient(config.Model)
-            .AsIChatClient()
-            .AsAIAgent(
-                name: "PeopleAgent",
-                instructions: instructions,
-                tools: tools.ToList());
-    }
-
-    public static IChatClient CreateChatClient(AgentConfig config)
-    {
-        var client = CreateOpenAiClient(config);
-
-        return client
+        var chatClient = client
             .GetChatClient(config.Model)
             .AsIChatClient();
+
+        if (telemetryConfig is { Enabled: true })
+        {
+            chatClient = chatClient
+                .AsBuilder()
+                .UseOpenTelemetry(
+                    sourceName: telemetryConfig.ServiceName,
+                    configure: c => c.EnableSensitiveData = telemetryConfig.EnableSensitiveData)
+                .Build();
+        }
+
+        return chatClient.AsAIAgent(
+            name: "PeopleAgent",
+            instructions: instructions,
+            tools: tools.ToList());
+    }
+
+    public static IChatClient CreateChatClient(AgentConfig config, TelemetryConfig? telemetryConfig = null)
+    {
+        var client = CreateOpenAiClient(config);
+
+        var chatClient = client
+            .GetChatClient(config.Model)
+            .AsIChatClient();
+
+        if (telemetryConfig is { Enabled: true })
+        {
+            chatClient = chatClient
+                .AsBuilder()
+                .UseOpenTelemetry(
+                    sourceName: telemetryConfig.ServiceName,
+                    configure: c => c.EnableSensitiveData = telemetryConfig.EnableSensitiveData)
+                .Build();
+        }
+
+        return chatClient;
     }
 
     public static OpenAIClient CreateOpenAiClient(AgentConfig config)

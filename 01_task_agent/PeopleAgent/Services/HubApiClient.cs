@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -9,6 +10,8 @@ namespace PeopleAgent.Services;
 
 public class HubApiClient
 {
+    private static readonly ActivitySource Activity = new("PeopleAgent.Hub");
+
     private readonly HttpClient _http;
     private readonly HubConfig _config;
 
@@ -29,6 +32,9 @@ public class HubApiClient
 
     public async Task<string> SubmitPeopleAsync(List<Person> people)
     {
+        using var outerSpan = Activity.StartActivity("hub.submit_people");
+        outerSpan?.SetTag("people.count", people.Count);
+
         var body = new
         {
             apikey = _config.ApiKey,
@@ -41,7 +47,11 @@ public class HubApiClient
         for (int attempt = 1; attempt <= _config.MaxRetries; attempt++)
         {
             await WaitForRateLimit();
-
+            using var span = Activity.StartActivity("http.post");
+            span?.SetTag("http.url", _config.ApiUrl);
+            span?.SetTag("http.method", "POST");
+            span?.SetTag("http.attempt", attempt);
+            span?.SetTag("http.request.body", json);
             ConsoleUI.PrintApiRequest(attempt, _config.MaxRetries, json);
 
             var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -53,12 +63,15 @@ public class HubApiClient
             }
             catch (Exception ex)
             {
+                span?.SetStatus(ActivityStatusCode.Error, ex.Message);
                 ConsoleUI.PrintError($"Network error: {ex.Message}");
                 await DelayBeforeRetry(attempt);
                 continue;
             }
 
             var responseBody = await response.Content.ReadAsStringAsync();
+            span?.SetTag("http.status_code", (int)response.StatusCode);
+            span?.SetTag("http.response.body", responseBody);
             UpdateRateLimitState(response, responseBody);
             ConsoleUI.PrintApiResponse((int)response.StatusCode, responseBody);
 

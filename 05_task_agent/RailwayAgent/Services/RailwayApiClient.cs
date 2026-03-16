@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -8,6 +9,8 @@ namespace RailwayAgent.Services;
 
 public class RailwayApiClient
 {
+    private static readonly ActivitySource Activity = new("RailwayAgent.Hub");
+
     private readonly HttpClient _http;
     private readonly RailwayConfig _config;
 
@@ -42,6 +45,12 @@ public class RailwayApiClient
             // Wait for rate limit before sending
             await WaitForRateLimit();
 
+            using var span = Activity.StartActivity("http.post");
+            span?.SetTag("http.url", _config.ApiUrl);
+            span?.SetTag("http.method", "POST");
+            span?.SetTag("http.attempt", attempt);
+            span?.SetTag("http.request.body", json);
+
             ConsoleUI.PrintApiRequest(attempt, _config.MaxRetries, json);
 
             var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -53,12 +62,15 @@ public class RailwayApiClient
             }
             catch (Exception ex)
             {
+                span?.SetStatus(ActivityStatusCode.Error, ex.Message);
                 ConsoleUI.PrintError($"Network error: {ex.Message}");
                 await DelayBeforeRetry(attempt);
                 continue;
             }
 
             var responseBody = await response.Content.ReadAsStringAsync();
+            span?.SetTag("http.status_code", (int)response.StatusCode);
+            span?.SetTag("http.response.body", responseBody);
 
             // Update rate limit state from headers and body
             UpdateRateLimitState(response, responseBody);

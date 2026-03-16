@@ -8,9 +8,37 @@ namespace RailwayAgent.Adapters;
 
 public static class OpenAiClientFactory
 {
-    public static AIAgent CreateAgent(AgentConfig config, string instructions, IEnumerable<AITool> tools)
+    public static AIAgent CreateAgent(
+        AgentConfig config,
+        string instructions,
+        IEnumerable<AITool> tools,
+        TelemetryConfig? telemetryConfig = null)
     {
-        var client = config.Provider.ToLowerInvariant() switch
+        var client = CreateOpenAiClient(config);
+
+        var chatClient = client
+            .GetChatClient(config.Model)
+            .AsIChatClient();
+
+        if (telemetryConfig is { Enabled: true })
+        {
+            chatClient = chatClient
+                .AsBuilder()
+                .UseOpenTelemetry(
+                    sourceName: telemetryConfig.ServiceName,
+                    configure: c => c.EnableSensitiveData = telemetryConfig.EnableSensitiveData)
+                .Build();
+        }
+
+        return chatClient.AsAIAgent(
+            name: "RailwayAgent",
+            instructions: instructions,
+            tools: tools.ToList());
+    }
+
+    public static OpenAIClient CreateOpenAiClient(AgentConfig config)
+    {
+        return config.Provider.ToLowerInvariant() switch
         {
             "openai" => new OpenAIClient(config.GetApiKey()),
             "lmstudio" => new OpenAIClient(
@@ -19,13 +47,5 @@ public static class OpenAiClientFactory
             _ => throw new InvalidOperationException(
                 $"Unknown provider '{config.Provider}'. Supported: openai, lmstudio")
         };
-
-        return client
-            .GetChatClient(config.Model)
-            .AsIChatClient()
-            .AsAIAgent(
-                name: "RailwayAgent",
-                instructions: instructions,
-                tools: tools.ToList());
     }
 }

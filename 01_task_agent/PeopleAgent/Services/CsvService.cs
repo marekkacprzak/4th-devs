@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using PeopleAgent.Models;
 using PeopleAgent.UI;
 
@@ -5,6 +6,8 @@ namespace PeopleAgent.Services;
 
 public class CsvService
 {
+    private static readonly ActivitySource Activity = new("PeopleAgent.Hub");
+
     private readonly HttpClient _http;
 
     public CsvService(HttpClient http)
@@ -14,8 +17,12 @@ public class CsvService
 
     public async Task<string> DownloadCsvAsync(string url)
     {
+        using var span = Activity.StartActivity("hub.download_csv");
+        span?.SetTag("http.url", url);
+        span?.SetTag("http.method", "GET");
         ConsoleUI.PrintInfo($"Downloading CSV from {url}");
         var content = await _http.GetStringAsync(url);
+        span?.SetTag("csv.length", content.Length);
         ConsoleUI.PrintInfo($"Downloaded {content.Length} chars");
         return content;
     }

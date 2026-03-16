@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -8,6 +9,8 @@ namespace SpkAgent.Services;
 
 public class HubApiClient
 {
+    private static readonly ActivitySource Activity = new("SpkAgent.Hub");
+
     private readonly HttpClient _http;
     private readonly HubConfig _config;
 
@@ -28,6 +31,9 @@ public class HubApiClient
 
     public async Task<string> SubmitDeclarationAsync(string declaration)
     {
+        using var span = Activity.StartActivity("hub.submit_declaration");
+        span?.SetTag("declaration.length", declaration.Length);
+
         var body = new
         {
             apikey = _config.ApiKey,
@@ -41,6 +47,12 @@ public class HubApiClient
         {
             await WaitForRateLimit();
 
+            using var httpSpan = Activity.StartActivity("http.post");
+            httpSpan?.SetTag("http.url", _config.ApiUrl);
+            httpSpan?.SetTag("http.method", "POST");
+            httpSpan?.SetTag("http.attempt", attempt);
+            httpSpan?.SetTag("http.request.body", json);
+
             ConsoleUI.PrintApiRequest(attempt, _config.MaxRetries, json);
 
             var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -52,12 +64,15 @@ public class HubApiClient
             }
             catch (Exception ex)
             {
+                httpSpan?.SetStatus(ActivityStatusCode.Error, ex.Message);
                 ConsoleUI.PrintError($"Network error: {ex.Message}");
                 await DelayBeforeRetry(attempt);
                 continue;
             }
 
             var responseBody = await response.Content.ReadAsStringAsync();
+            httpSpan?.SetTag("http.status_code", (int)response.StatusCode);
+            httpSpan?.SetTag("http.response.body", responseBody);
             UpdateRateLimitState(response, responseBody);
             ConsoleUI.PrintApiResponse((int)response.StatusCode, responseBody);
 
@@ -75,12 +90,32 @@ public class HubApiClient
             }
 
             if (!response.IsSuccessStatusCode)
+            {
+                span?.SetStatus(ActivityStatusCode.Error, $"HTTP {(int)response.StatusCode}");
                 return $"HTTP {(int)response.StatusCode}: {responseBody}";
+            }
 
+            SetResponseTags(span, responseBody);
             return responseBody;
         }
 
+        span?.SetStatus(ActivityStatusCode.Error, "All attempts failed");
         return $"ERROR: All {_config.MaxRetries} attempts failed.";
+    }
+
+    private static void SetResponseTags(System.Diagnostics.Activity? span, string responseBody)
+    {
+        if (span == null) return;
+        try
+        {
+            using var doc = JsonDocument.Parse(responseBody);
+            var root = doc.RootElement;
+            if (root.TryGetProperty("code", out var code))
+                span.SetTag("hub.code", code.GetInt32());
+            if (root.TryGetProperty("message", out var msg))
+                span.SetTag("hub.message", msg.GetString());
+        }
+        catch { }
     }
 
     private async Task WaitForRateLimit()

@@ -295,7 +295,7 @@ public class HubApiClient
             if (root.TryGetProperty("cached_tokens", out var cached))
                 span.SetTag("hub.cached_tokens", cached.GetInt32());
         }
-        catch { }
+        catch { ConsoleUI.PrintError("Failed to parse hub response for telemetry tags."); }
     }
 
     private async Task DelayBeforeRetry(int attempt)

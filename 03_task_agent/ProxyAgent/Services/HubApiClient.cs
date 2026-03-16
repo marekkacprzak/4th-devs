@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -8,6 +9,8 @@ namespace ProxyAgent.Services;
 
 public class HubApiClient
 {
+    private static readonly ActivitySource Activity = new("ProxyAgent.Hub");
+
     private readonly HttpClient _http;
     private readonly HubConfig _config;
 
@@ -28,17 +31,24 @@ public class HubApiClient
 
     public async Task<string> CheckPackageAsync(string packageId)
     {
-        return await PostJsonAsync(_config.PackagesUrl, new
+        using var span = Activity.StartActivity("hub.check_package");
+        span?.SetTag("package.id", packageId);
+        var result = await PostJsonAsync(_config.PackagesUrl, new
         {
             apikey = _config.ApiKey,
             action = "check",
             packageid = packageId
         });
+        SetResponseTags(span, result);
+        return result;
     }
 
     public async Task<string> RedirectPackageAsync(string packageId, string destination, string code)
     {
-        return await PostJsonAsync(_config.PackagesUrl, new
+        using var span = Activity.StartActivity("hub.redirect_package");
+        span?.SetTag("package.id", packageId);
+        span?.SetTag("package.destination", destination);
+        var result = await PostJsonAsync(_config.PackagesUrl, new
         {
             apikey = _config.ApiKey,
             action = "redirect",
@@ -46,16 +56,23 @@ public class HubApiClient
             destination,
             code
         });
+        SetResponseTags(span, result);
+        return result;
     }
 
     public async Task<string> SubmitAnswerAsync(string url, string sessionId)
     {
-        return await PostJsonAsync(_config.ApiUrl, new
+        using var span = Activity.StartActivity("hub.submit_answer");
+        span?.SetTag("submit.url", url);
+        span?.SetTag("submit.session_id", sessionId);
+        var result = await PostJsonAsync(_config.ApiUrl, new
         {
             apikey = _config.ApiKey,
             task = _config.TaskName,
             answer = new { url, sessionID = sessionId }
         });
+        SetResponseTags(span, result);
+        return result;
     }
 
     public async Task<string> PostJsonAsync(string url, object body)
@@ -65,6 +82,11 @@ public class HubApiClient
         for (int attempt = 1; attempt <= _config.MaxRetries; attempt++)
         {
             await WaitForRateLimit();
+            using var span = Activity.StartActivity("http.post");
+            span?.SetTag("http.url", url);
+            span?.SetTag("http.method", "POST");
+            span?.SetTag("http.attempt", attempt);
+            span?.SetTag("http.request.body", json);
             ConsoleUI.PrintApiRequest(attempt, _config.MaxRetries, json);
 
             var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -76,12 +98,15 @@ public class HubApiClient
             }
             catch (Exception ex)
             {
+                span?.SetStatus(ActivityStatusCode.Error, ex.Message);
                 ConsoleUI.PrintError($"Network error: {ex.Message}");
                 await DelayBeforeRetry(attempt);
                 continue;
             }
 
             var responseBody = await response.Content.ReadAsStringAsync();
+            span?.SetTag("http.status_code", (int)response.StatusCode);
+            span?.SetTag("http.response.body", responseBody);
             UpdateRateLimitState(response, responseBody);
             ConsoleUI.PrintApiResponse((int)response.StatusCode, responseBody);
 
@@ -145,6 +170,23 @@ public class HubApiClient
         {
             _nextAllowedCall = nextCall.Value;
         }
+    }
+
+    private static void SetResponseTags(System.Diagnostics.Activity? span, string responseBody)
+    {
+        if (span == null) return;
+        try
+        {
+            using var doc = JsonDocument.Parse(responseBody);
+            var root = doc.RootElement;
+            if (root.TryGetProperty("code", out var code))
+                span.SetTag("hub.code", code.GetInt32());
+            if (root.TryGetProperty("message", out var msg))
+                span.SetTag("hub.message", msg.GetString());
+            if (root.TryGetProperty("confirmation", out var conf))
+                span.SetTag("hub.confirmation", conf.GetString());
+        }
+        catch { }
     }
 
     private async Task DelayBeforeRetry(int attempt)
