@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -8,6 +9,8 @@ namespace CategorizeAgent.Services;
 
 public class HubApiClient
 {
+    private static readonly ActivitySource Activity = new("CategorizeAgent.Hub");
+
     private readonly HttpClient _http;
     private readonly HubConfig _config;
 
@@ -30,30 +33,41 @@ public class HubApiClient
 
     public async Task<string> GetCsvAsync()
     {
+        using var span = Activity.StartActivity("hub.get_csv");
         var url = $"{_config.DataBaseUrl}/{_config.ApiKey}/categorize.csv";
-        return await GetStringAsync(url);
+        var result = await GetStringAsync(url);
+        span?.SetTag("csv.lines", result.Split('\n').Length);
+        return result;
     }
 
     public async Task<string> ResetBudgetAsync()
     {
-        return await PostJsonAsync(_config.ApiUrl, new
+        using var span = Activity.StartActivity("hub.reset_budget");
+        var result = await PostJsonAsync(_config.ApiUrl, new
         {
             apikey = _config.ApiKey,
             task = _config.TaskName,
             answer = new { prompt = "reset" }
         });
+        SetResponseTags(span, result);
+        return result;
     }
 
     public async Task<string> SendClassificationAsync(string prompt)
     {
+        using var span = Activity.StartActivity("hub.classify");
+        span?.SetTag("classify.prompt_length", prompt.Length);
+
         // Use raw POST — the hub returns business errors as 406/402 with JSON bodies
         // that we need to parse, so don't prefix with "HTTP xxx:"
-        return await PostJsonRawAsync(_config.ApiUrl, new
+        var result = await PostJsonRawAsync(_config.ApiUrl, new
         {
             apikey = _config.ApiKey,
             task = _config.TaskName,
             answer = new { prompt }
         });
+        SetResponseTags(span, result);
+        return result;
     }
 
     // --- Generic HTTP methods ---
@@ -69,6 +83,11 @@ public class HubApiClient
         for (int attempt = 1; attempt <= _config.MaxRetries; attempt++)
         {
             await WaitForRateLimit();
+            using var span = Activity.StartActivity("http.post");
+            span?.SetTag("http.url", url);
+            span?.SetTag("http.method", "POST");
+            span?.SetTag("http.attempt", attempt);
+            span?.SetTag("http.request.body", json);
             ConsoleUI.PrintApiRequest(attempt, _config.MaxRetries, json);
 
             var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -80,12 +99,15 @@ public class HubApiClient
             }
             catch (Exception ex)
             {
+                span?.SetStatus(ActivityStatusCode.Error, ex.Message);
                 ConsoleUI.PrintError($"Network error: {ex.Message}");
                 await DelayBeforeRetry(attempt);
                 continue;
             }
 
             var responseBody = await response.Content.ReadAsStringAsync();
+            span?.SetTag("http.status_code", (int)response.StatusCode);
+            span?.SetTag("http.response.body", responseBody);
             UpdateRateLimitState(response, responseBody);
             ConsoleUI.PrintApiResponse((int)response.StatusCode, responseBody);
 
@@ -116,6 +138,11 @@ public class HubApiClient
         for (int attempt = 1; attempt <= _config.MaxRetries; attempt++)
         {
             await WaitForRateLimit();
+            using var span = Activity.StartActivity("http.post");
+            span?.SetTag("http.url", url);
+            span?.SetTag("http.method", "POST");
+            span?.SetTag("http.attempt", attempt);
+            span?.SetTag("http.request.body", json);
             ConsoleUI.PrintApiRequest(attempt, _config.MaxRetries, json);
 
             var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -127,12 +154,15 @@ public class HubApiClient
             }
             catch (Exception ex)
             {
+                span?.SetStatus(ActivityStatusCode.Error, ex.Message);
                 ConsoleUI.PrintError($"Network error: {ex.Message}");
                 await DelayBeforeRetry(attempt);
                 continue;
             }
 
             var responseBody = await response.Content.ReadAsStringAsync();
+            span?.SetTag("http.status_code", (int)response.StatusCode);
+            span?.SetTag("http.response.body", responseBody);
             UpdateRateLimitState(response, responseBody);
             ConsoleUI.PrintApiResponse((int)response.StatusCode, responseBody);
 
@@ -163,6 +193,10 @@ public class HubApiClient
         for (int attempt = 1; attempt <= _config.MaxRetries; attempt++)
         {
             await WaitForRateLimit();
+            using var span = Activity.StartActivity("http.get");
+            span?.SetTag("http.url", url);
+            span?.SetTag("http.method", "GET");
+            span?.SetTag("http.attempt", attempt);
             ConsoleUI.PrintApiRequest(attempt, _config.MaxRetries, $"GET {url}");
 
             HttpResponseMessage response;
@@ -173,12 +207,15 @@ public class HubApiClient
             }
             catch (Exception ex)
             {
+                span?.SetStatus(ActivityStatusCode.Error, ex.Message);
                 ConsoleUI.PrintError($"Network error: {ex.Message}");
                 await DelayBeforeRetry(attempt);
                 continue;
             }
 
             var responseBody = await response.Content.ReadAsStringAsync();
+            span?.SetTag("http.status_code", (int)response.StatusCode);
+            span?.SetTag("http.response.body_length", responseBody.Length);
             UpdateRateLimitState(response, responseBody);
             ConsoleUI.PrintApiResponse((int)response.StatusCode, responseBody);
 
@@ -238,6 +275,27 @@ public class HubApiClient
         {
             _nextAllowedCall = nextCall.Value;
         }
+    }
+
+    private static void SetResponseTags(System.Diagnostics.Activity? span, string responseBody)
+    {
+        if (span == null) return;
+        try
+        {
+            using var doc = JsonDocument.Parse(responseBody);
+            var root = doc.RootElement;
+            if (root.TryGetProperty("code", out var code))
+                span.SetTag("hub.code", code.GetInt32());
+            if (root.TryGetProperty("message", out var msg))
+                span.SetTag("hub.message", msg.GetString());
+            if (root.TryGetProperty("balance", out var bal))
+                span.SetTag("hub.balance", bal.GetDouble());
+            if (root.TryGetProperty("tokens", out var tok))
+                span.SetTag("hub.tokens", tok.GetInt32());
+            if (root.TryGetProperty("cached_tokens", out var cached))
+                span.SetTag("hub.cached_tokens", cached.GetInt32());
+        }
+        catch { }
     }
 
     private async Task DelayBeforeRetry(int attempt)

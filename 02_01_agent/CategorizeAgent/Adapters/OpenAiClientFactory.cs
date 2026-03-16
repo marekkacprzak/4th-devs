@@ -8,17 +8,32 @@ namespace CategorizeAgent.Adapters;
 
 public static class OpenAiClientFactory
 {
-    public static AIAgent CreateAgent(AgentConfig config, string instructions, IEnumerable<AITool> tools)
+    public static AIAgent CreateAgent(
+        AgentConfig config,
+        string instructions,
+        IEnumerable<AITool> tools,
+        TelemetryConfig? telemetryConfig = null)
     {
         var client = CreateOpenAiClient(config);
 
-        return client
+        var chatClient = client
             .GetChatClient(config.Model)
-            .AsIChatClient()
-            .AsAIAgent(
-                name: "CategorizeAgent",
-                instructions: instructions,
-                tools: tools.ToList());
+            .AsIChatClient();
+
+        if (telemetryConfig is { Enabled: true })
+        {
+            chatClient = chatClient
+                .AsBuilder()
+                .UseOpenTelemetry(
+                    sourceName: telemetryConfig.ServiceName,
+                    configure: c => c.EnableSensitiveData = telemetryConfig.EnableSensitiveData)
+                .Build();
+        }
+
+        return chatClient.AsAIAgent(
+            name: "CategorizeAgent",
+            instructions: instructions,
+            tools: tools.ToList());
     }
 
     public static IChatClient CreateChatClient(AgentConfig config)
