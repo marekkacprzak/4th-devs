@@ -3,41 +3,41 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05_task_agent", "05_task_agent", "{00882C86-D326-5D17-F2C5-CEDD3CBA012E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "exam_01_05_task_agent", "exam_01_05_task_agent", "{00882C86-D326-5D17-F2C5-CEDD3CBA012E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RailwayAgent", "05_task_agent\RailwayAgent\RailwayAgent.csproj", "{9028D2FA-9AFD-572F-B396-7915A9477CA2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RailwayAgent", "exam_01_05_task_agent\RailwayAgent\RailwayAgent.csproj", "{9028D2FA-9AFD-572F-B396-7915A9477CA2}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04_task_agent", "04_task_agent", "{A497BF14-13AF-A6C9-6A07-572EBC3FBFD5}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "exam_01_04_task_agent", "exam_01_04_task_agent", "{A497BF14-13AF-A6C9-6A07-572EBC3FBFD5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpkAgent", "04_task_agent\SpkAgent\SpkAgent.csproj", "{EE00968A-233C-475F-B0D6-F4D6BA0FAA50}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpkAgent", "exam_01_04_task_agent\SpkAgent\SpkAgent.csproj", "{EE00968A-233C-475F-B0D6-F4D6BA0FAA50}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01_task_agent", "01_task_agent", "{7BFFADB4-7AD0-E168-87BE-DA4BA8F31114}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "exam_01_01_task_agent", "exam_01_01_task_agent", "{7BFFADB4-7AD0-E168-87BE-DA4BA8F31114}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeopleAgent", "01_task_agent\PeopleAgent\PeopleAgent.csproj", "{CBF3B0D2-6C07-4D19-810E-4ED2E8A79192}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeopleAgent", "exam_01_01_task_agent\PeopleAgent\PeopleAgent.csproj", "{CBF3B0D2-6C07-4D19-810E-4ED2E8A79192}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02_task_agent", "02_task_agent", "{4AA77F6F-B287-0B52-894A-778F6C76A408}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "exam_01_02_task_agent", "exam_01_02_task_agent", "{4AA77F6F-B287-0B52-894A-778F6C76A408}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FindHimAgent", "02_task_agent\FindHimAgent\FindHimAgent.csproj", "{C5B87BFC-5C33-46F6-A2BC-16727ADB4095}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FindHimAgent", "exam_01_02_task_agent\FindHimAgent\FindHimAgent.csproj", "{C5B87BFC-5C33-46F6-A2BC-16727ADB4095}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03_task_agent", "03_task_agent", "{83FFD04F-5D7A-9108-166D-89C5655169E4}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "exam_01_03_task_agent", "exam_01_03_task_agent", "{83FFD04F-5D7A-9108-166D-89C5655169E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProxyAgent", "03_task_agent\ProxyAgent\ProxyAgent.csproj", "{2EC12578-3C17-49A3-BEA4-49CCD385183B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProxyAgent", "exam_01_03_task_agent\ProxyAgent\ProxyAgent.csproj", "{2EC12578-3C17-49A3-BEA4-49CCD385183B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02_01_agent", "02_01_agent", "{A2E01694-350C-F694-0D63-D91F6BBC7D3F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "exam_02_01_agent", "exam_02_01_agent", "{A2E01694-350C-F694-0D63-D91F6BBC7D3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CategorizeAgent", "02_01_agent\CategorizeAgent\CategorizeAgent.csproj", "{6B749A26-08A6-4589-A31B-6AF4BA3C639A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CategorizeAgent", "exam_02_01_agent\CategorizeAgent\CategorizeAgent.csproj", "{6B749A26-08A6-4589-A31B-6AF4BA3C639A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CategorizeAgent.AppHost", "02_01_agent\CategorizeAgent.AppHost\CategorizeAgent.AppHost.csproj", "{03C4180E-CC9F-4A19-A390-4C1B6C80781F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CategorizeAgent.AppHost", "exam_02_01_agent\CategorizeAgent.AppHost\CategorizeAgent.AppHost.csproj", "{03C4180E-CC9F-4A19-A390-4C1B6C80781F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeopleAgent.AppHost", "01_task_agent\PeopleAgent.AppHost\PeopleAgent.AppHost.csproj", "{D322196B-3346-4BDC-A1CB-0D732910822B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeopleAgent.AppHost", "exam_01_01_task_agent\PeopleAgent.AppHost\PeopleAgent.AppHost.csproj", "{D322196B-3346-4BDC-A1CB-0D732910822B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FindHimAgent.AppHost", "02_task_agent\FindHimAgent.AppHost\FindHimAgent.AppHost.csproj", "{608791E7-A74A-4B3D-9ECF-5FE6816C3276}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FindHimAgent.AppHost", "exam_01_02_task_agent\FindHimAgent.AppHost\FindHimAgent.AppHost.csproj", "{608791E7-A74A-4B3D-9ECF-5FE6816C3276}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProxyAgent.AppHost", "03_task_agent\ProxyAgent.AppHost\ProxyAgent.AppHost.csproj", "{F1669311-8FB9-4B19-88A3-584D055AB712}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProxyAgent.AppHost", "exam_01_03_task_agent\ProxyAgent.AppHost\ProxyAgent.AppHost.csproj", "{F1669311-8FB9-4B19-88A3-584D055AB712}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpkAgent.AppHost", "04_task_agent\SpkAgent.AppHost\SpkAgent.AppHost.csproj", "{36990249-3712-4FAA-AECF-A808453753B8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpkAgent.AppHost", "exam_01_04_task_agent\SpkAgent.AppHost\SpkAgent.AppHost.csproj", "{36990249-3712-4FAA-AECF-A808453753B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RailwayAgent.AppHost", "05_task_agent\RailwayAgent.AppHost\RailwayAgent.AppHost.csproj", "{DFB7157A-82D7-446B-8943-A10255467CC3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RailwayAgent.AppHost", "exam_01_05_task_agent\RailwayAgent.AppHost\RailwayAgent.AppHost.csproj", "{DFB7157A-82D7-446B-8943-A10255467CC3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
