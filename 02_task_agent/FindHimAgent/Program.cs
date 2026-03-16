@@ -6,6 +6,7 @@ using FindHimAgent.Config;
 using FindHimAgent.Models;
 using FindHimAgent.Services;
 using FindHimAgent.Tools;
+using FindHimAgent.Telemetry;
 using FindHimAgent.UI;
 
 // 1. Load configuration
@@ -20,6 +21,11 @@ configuration.GetSection("Agent").Bind(agentConfig);
 
 var hubConfig = new HubConfig();
 configuration.GetSection("Hub").Bind(hubConfig);
+
+var telemetryConfig = new TelemetryConfig();
+configuration.GetSection("Telemetry").Bind(telemetryConfig);
+
+using var telemetry = new TelemetrySetup(telemetryConfig);
 
 // 2. Create services
 var httpClient = new HttpClient { Timeout = TimeSpan.FromSeconds(60) };

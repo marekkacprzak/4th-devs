@@ -4,6 +4,7 @@ using ProxyAgent.Config;
 using ProxyAgent.Models;
 using ProxyAgent.Services;
 using ProxyAgent.Tools;
+using ProxyAgent.Telemetry;
 using ProxyAgent.UI;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +19,9 @@ builder.Configuration.GetSection("Hub").Bind(hubConfig);
 var proxyConfig = new ProxyConfig();
 builder.Configuration.GetSection("Proxy").Bind(proxyConfig);
 
+var telemetryConfig = new TelemetryConfig();
+builder.Configuration.GetSection("Telemetry").Bind(telemetryConfig);
+
 // Configure JSON serialization for minimal API
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
@@ -25,6 +29,8 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 });
 
 var app = builder.Build();
+
+using var telemetry = new TelemetrySetup(telemetryConfig);
 
 // Create services
 var httpClient = new HttpClient { Timeout = TimeSpan.FromSeconds(60) };
@@ -40,7 +46,7 @@ var tools = new List<AITool>
 };
 
 // Create LLM client
-var chatClient = OpenAiClientFactory.CreateChatClient(agentConfig);
+var chatClient = OpenAiClientFactory.CreateChatClient(agentConfig, telemetryConfig);
 
 // System prompt
 var systemPrompt = """

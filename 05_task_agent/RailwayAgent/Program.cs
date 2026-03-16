@@ -4,6 +4,7 @@ using RailwayAgent.Adapters;
 using RailwayAgent.Config;
 using RailwayAgent.Services;
 using RailwayAgent.Tools;
+using RailwayAgent.Telemetry;
 using RailwayAgent.UI;
 
 // 1. Load configuration
@@ -18,6 +19,11 @@ configuration.GetSection("Agent").Bind(agentConfig);
 
 var railwayConfig = new RailwayConfig();
 configuration.GetSection("Railway").Bind(railwayConfig);
+
+var telemetryConfig = new TelemetryConfig();
+configuration.GetSection("Telemetry").Bind(telemetryConfig);
+
+using var telemetry = new TelemetrySetup(telemetryConfig);
 
 // 2. Create services
 var httpClient = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
@@ -60,7 +66,7 @@ var instructions = """
     - Report the flag when you find it
     """;
 
-var agent = OpenAiClientFactory.CreateAgent(agentConfig, instructions, tools);
+var agent = OpenAiClientFactory.CreateAgent(agentConfig, instructions, tools, telemetryConfig);
 
 // 5. Run agent
 ConsoleUI.PrintBanner("RAILWAY", $"Provider: {agentConfig.Provider} | Model: {agentConfig.Model}");

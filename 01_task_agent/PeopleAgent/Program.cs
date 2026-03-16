@@ -6,6 +6,7 @@ using PeopleAgent.Config;
 using PeopleAgent.Models;
 using PeopleAgent.Services;
 using PeopleAgent.Tools;
+using PeopleAgent.Telemetry;
 using PeopleAgent.UI;
 
 // 1. Load configuration
@@ -20,6 +21,11 @@ configuration.GetSection("Agent").Bind(agentConfig);
 
 var hubConfig = new HubConfig();
 configuration.GetSection("Hub").Bind(hubConfig);
+
+var telemetryConfig = new TelemetryConfig();
+configuration.GetSection("Telemetry").Bind(telemetryConfig);
+
+using var telemetry = new TelemetrySetup(telemetryConfig);
 
 // 2. Create services
 var httpClient = new HttpClient { Timeout = TimeSpan.FromSeconds(300) };
@@ -84,7 +90,8 @@ try
     var agent = OpenAiClientFactory.CreateAgent(
         agentConfig,
         TaggingTools.BuildTaggingInstructions(),
-        tools);
+        tools,
+        telemetryConfig);
 
     var agentPrompt = $"Classify the following {filtered.Count} job descriptions and call SaveTagResults with the results:\n\n{jobsList}";
     var agentResponse = await agent.RunAsync(agentPrompt);
@@ -102,7 +109,7 @@ catch (Exception ex)
 if (tagResults.Count == 0)
 {
     ConsoleUI.PrintInfo("Falling back to ChatClient with Structured Output (JSON)...");
-    var chatClient = OpenAiClientFactory.CreateChatClient(agentConfig);
+    var chatClient = OpenAiClientFactory.CreateChatClient(agentConfig, telemetryConfig);
 
     var taggingPrompt = TaggingTools.BuildTaggingInstructions() + "\n\n" +
         "IMPORTANT: Respond ONLY with a JSON object in this exact format, no other text:\n" +

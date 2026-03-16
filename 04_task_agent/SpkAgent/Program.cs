@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using SpkAgent.Adapters;
 using SpkAgent.Config;
 using SpkAgent.Services;
+using SpkAgent.Telemetry;
 using SpkAgent.Tools;
 using SpkAgent.UI;
 
@@ -22,10 +23,15 @@ configuration.GetSection("Vision").Bind(visionConfig);
 var hubConfig = new HubConfig();
 configuration.GetSection("Hub").Bind(hubConfig);
 
+var telemetryConfig = new TelemetryConfig();
+configuration.GetSection("Telemetry").Bind(telemetryConfig);
+
+using var telemetry = new TelemetrySetup(telemetryConfig);
+
 // 2. Create services
 var httpClient = new HttpClient { Timeout = TimeSpan.FromSeconds(60) };
 var hubApi = new HubApiClient(httpClient, hubConfig);
-var chatClient = OpenAiClientFactory.CreateChatClient(agentConfig);
+var chatClient = OpenAiClientFactory.CreateChatClient(agentConfig, telemetryConfig);
 
 var basePath = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), ".."));
 var docsDir = Path.Combine(basePath, "docs");

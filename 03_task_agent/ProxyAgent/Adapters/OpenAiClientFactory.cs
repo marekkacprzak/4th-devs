@@ -7,10 +7,25 @@ namespace ProxyAgent.Adapters;
 
 public static class OpenAiClientFactory
 {
-    public static IChatClient CreateChatClient(AgentConfig config)
+    public static IChatClient CreateChatClient(AgentConfig config, TelemetryConfig? telemetryConfig = null)
     {
         var client = CreateOpenAiClient(config);
-        return client.GetChatClient(config.Model).AsIChatClient();
+
+        var chatClient = client
+            .GetChatClient(config.Model)
+            .AsIChatClient();
+
+        if (telemetryConfig is { Enabled: true })
+        {
+            chatClient = chatClient
+                .AsBuilder()
+                .UseOpenTelemetry(
+                    sourceName: telemetryConfig.ServiceName,
+                    configure: c => c.EnableSensitiveData = telemetryConfig.EnableSensitiveData)
+                .Build();
+        }
+
+        return chatClient;
     }
 
     public static OpenAIClient CreateOpenAiClient(AgentConfig config)

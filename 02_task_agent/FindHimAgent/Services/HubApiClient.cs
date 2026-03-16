@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -8,6 +9,8 @@ namespace FindHimAgent.Services;
 
 public class HubApiClient
 {
+    private static readonly ActivitySource Activity = new("FindHimAgent.Hub");
+
     private readonly HttpClient _http;
     private readonly HubConfig _config;
 
@@ -33,6 +36,11 @@ public class HubApiClient
         for (int attempt = 1; attempt <= _config.MaxRetries; attempt++)
         {
             await WaitForRateLimit();
+            using var span = Activity.StartActivity("http.post");
+            span?.SetTag("http.url", url);
+            span?.SetTag("http.method", "POST");
+            span?.SetTag("http.attempt", attempt);
+            span?.SetTag("http.request.body", json);
             ConsoleUI.PrintApiRequest(attempt, _config.MaxRetries, json);
 
             var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -44,12 +52,15 @@ public class HubApiClient
             }
             catch (Exception ex)
             {
+                span?.SetStatus(ActivityStatusCode.Error, ex.Message);
                 ConsoleUI.PrintError($"Network error: {ex.Message}");
                 await DelayBeforeRetry(attempt);
                 continue;
             }
 
             var responseBody = await response.Content.ReadAsStringAsync();
+            span?.SetTag("http.status_code", (int)response.StatusCode);
+            span?.SetTag("http.response.body", responseBody);
             UpdateRateLimitState(response, responseBody);
             ConsoleUI.PrintApiResponse((int)response.StatusCode, responseBody);
 
@@ -80,6 +91,10 @@ public class HubApiClient
         for (int attempt = 1; attempt <= _config.MaxRetries; attempt++)
         {
             await WaitForRateLimit();
+            using var span = Activity.StartActivity("http.get");
+            span?.SetTag("http.url", url);
+            span?.SetTag("http.method", "GET");
+            span?.SetTag("http.attempt", attempt);
             ConsoleUI.PrintApiRequest(attempt, _config.MaxRetries, $"GET {url}");
 
             HttpResponseMessage response;
@@ -90,12 +105,15 @@ public class HubApiClient
             }
             catch (Exception ex)
             {
+                span?.SetStatus(ActivityStatusCode.Error, ex.Message);
                 ConsoleUI.PrintError($"Network error: {ex.Message}");
                 await DelayBeforeRetry(attempt);
                 continue;
             }
 
             var responseBody = await response.Content.ReadAsStringAsync();
+            span?.SetTag("http.status_code", (int)response.StatusCode);
+            span?.SetTag("http.response.body_length", responseBody.Length);
             UpdateRateLimitState(response, responseBody);
             ConsoleUI.PrintApiResponse((int)response.StatusCode, responseBody);
 
@@ -116,6 +134,9 @@ public class HubApiClient
 
     public async Task<string> GetPersonLocationsAsync(string name, string surname)
     {
+        using var span = Activity.StartActivity("hub.get_person_locations");
+        span?.SetTag("person.name", name);
+        span?.SetTag("person.surname", surname);
         return await PostJsonAsync("https://hub.REDACTED.org/api/location", new
         {
             apikey = _config.ApiKey,
@@ -126,6 +147,10 @@ public class HubApiClient
 
     public async Task<string> GetAccessLevelAsync(string name, string surname, int birthYear)
     {
+        using var span = Activity.StartActivity("hub.get_access_level");
+        span?.SetTag("person.name", name);
+        span?.SetTag("person.surname", surname);
+        span?.SetTag("person.birth_year", birthYear);
         return await PostJsonAsync("https://hub.REDACTED.org/api/accesslevel", new
         {
             apikey = _config.ApiKey,
@@ -137,12 +162,14 @@ public class HubApiClient
 
     public async Task<string> GetPowerPlantsAsync()
     {
+        using var span = Activity.StartActivity("hub.get_power_plants");
         var url = $"{_config.DataBaseUrl}/{_config.ApiKey}/findhim_locations.json";
         return await GetJsonAsync(url);
     }
 
     public async Task<string> SubmitAnswerAsync(object answer)
     {
+        using var span = Activity.StartActivity("hub.submit_answer");
         return await PostJsonAsync(_config.ApiUrl, new
         {
             apikey = _config.ApiKey,
