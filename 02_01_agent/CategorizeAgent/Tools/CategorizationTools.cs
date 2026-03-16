@@ -33,7 +33,7 @@ public class CategorizationTools
         var resetResult = await _hubApi.ResetBudgetAsync();
         ConsoleUI.PrintInfo($"Reset: {resetResult}");
 
-        // Step 2: Load CSV (download once, then reuse from data/)
+        // Step 2: Load CSV from cache or download once
         ConsoleUI.PrintStep("Loading CSV...");
         string csvContent;
         if (File.Exists(_csvPath))
@@ -72,6 +72,7 @@ public class CategorizationTools
         {
             var item = items[i];
             var prompt = promptTemplate
+                .Replace("\\n", "\n")
                 .Replace("{id}", item.Id)
                 .Replace("{description}", item.Description);
 

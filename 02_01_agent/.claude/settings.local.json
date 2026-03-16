@@ -17,7 +17,10 @@
       "Bash(/usr/local/share/dotnet/dotnet add:*)",
       "Bash(/usr/local/share/dotnet/dotnet run:*)",
       "Bash(curl:*)",
-      "WebFetch(domain:hub.REDACTED.org)"
+      "WebFetch(domain:hub.REDACTED.org)",
+      "mcp__microsoft_learn__microsoft_docs_search",
+      "mcp__microsoft_learn__microsoft_docs_fetch",
+      "Bash(dotnet:*)"
     ]
   }
 }

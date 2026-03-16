@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using CategorizeAgent.Adapters;
 using CategorizeAgent.Config;
 using CategorizeAgent.Services;
+using CategorizeAgent.Telemetry;
 using CategorizeAgent.Tools;
 using CategorizeAgent.UI;
 
@@ -19,6 +20,11 @@ configuration.GetSection("Agent").Bind(agentConfig);
 var hubConfig = new HubConfig();
 configuration.GetSection("Hub").Bind(hubConfig);
 
+var telemetryConfig = new TelemetryConfig();
+configuration.GetSection("Telemetry").Bind(telemetryConfig);
+
+using var telemetry = new TelemetrySetup(telemetryConfig);
+
 // 2. Create services
 var httpClient = new HttpClient { Timeout = TimeSpan.FromSeconds(60) };
 var hubApi = new HubApiClient(httpClient, hubConfig);
@@ -34,7 +40,7 @@ var tools = new List<AITool>
 };
 
 var systemPrompt = CategorizationTools.BuildSystemPrompt();
-var agent = OpenAiClientFactory.CreateAgent(agentConfig, systemPrompt, tools);
+var agent = OpenAiClientFactory.CreateAgent(agentConfig, systemPrompt, tools, telemetryConfig);
 
 // 4. Run agent loop
 const int maxAttempts = 10;
