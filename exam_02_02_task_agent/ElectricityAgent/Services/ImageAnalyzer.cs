@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Text;
 using SkiaSharp;
 using ElectricityAgent.Models;
@@ -11,6 +12,7 @@ namespace ElectricityAgent.Services;
 /// </summary>
 public static class ImageAnalyzer
 {
+    private static readonly ActivitySource Activity = new("ElectricityAgent.ImageAnalyzer");
     private const int DarkThreshold = 120;
     private static string _dataDir = Path.Combine(Directory.GetCurrentDirectory(), "data");
 
@@ -19,6 +21,9 @@ public static class ImageAnalyzer
     /// </summary>
     public static BoardState AnalyzeBoard(byte[] pngBytes, int stepNumber)
     {
+        using var span = Activity.StartActivity("image.analyze_board");
+        span?.SetTag("step_number", stepNumber);
+        span?.SetTag("image.size_bytes", pngBytes.Length);
         // Ensure data directory exists
         Directory.CreateDirectory(_dataDir);
 
@@ -105,6 +110,8 @@ public static class ImageAnalyzer
         var reportPath = Path.Combine(_dataDir, $"step_{stepNumber:D2}_recognition.md");
         File.WriteAllText(reportPath, report.ToString());
         ConsoleUI.PrintInfo($"Saved recognition report: {reportPath}");
+
+        span?.SetTag("board.description", board.ToTextDescription());
 
         return board;
     }
