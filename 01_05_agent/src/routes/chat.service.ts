@@ -5,9 +5,10 @@ import type { Agent, AgentId, CallId, Item, UserId } from '../domain/index.js'
 import { runAgent, runAgentStream, deliverResult as deliverAgentResult } from '../runtime/index.js'
 import type { ToolResult } from '../tools/index.js'
 import { filterResponseItems, toChatResponse, type ChatResponse } from './chat.response.js'
-import { getAgentLastSequence, setupChatTurn } from './chat.turn.js'
+import { getAgentLastSequence, setupChatTurn, type SetupChatTurnResult } from './chat.turn.js'
 
 export type { ChatResponse } from './chat.response.js'
+export type PreparedChat = SetupChatTurnResult
 
 export type ChatResult =
   | { ok: true; response: ChatResponse }
@@ -37,13 +38,17 @@ async function loadVisibleItems(
   return filterResponseItems(items, responseStartSequence)
 }
 
-export async function processChat(req: ChatRequest, ctx: RuntimeContext, userId: UserId): Promise<ChatResult> {
-  const setup = await setupChatTurn(req, ctx, userId)
-  if (!setup.ok) {
-    return { ok: false, error: setup.error }
-  }
+export async function prepareChat(req: ChatRequest, ctx: RuntimeContext, userId: UserId) {
+  return setupChatTurn(req, ctx, userId)
+}
 
-  const { agent, traceId, responseStartSequence } = setup.data
+export async function executePreparedChat(
+  prepared: PreparedChat,
+  req: ChatRequest,
+  ctx: RuntimeContext,
+  userId: UserId,
+): Promise<ChatResult> {
+  const { agent, traceId, responseStartSequence } = prepared
 
   const result = await runAgent(agent.id, ctx, {
     maxTurns: 10,
@@ -65,6 +70,15 @@ export async function processChat(req: ChatRequest, ctx: RuntimeContext, userId:
       result.status === 'waiting' ? result.waitingFor : undefined,
     ),
   }
+}
+
+export async function processChat(req: ChatRequest, ctx: RuntimeContext, userId: UserId): Promise<ChatResult> {
+  const setup = await prepareChat(req, ctx, userId)
+  if (!setup.ok) {
+    return { ok: false, error: setup.error }
+  }
+
+  return executePreparedChat(setup.data, req, ctx, userId)
 }
 
 export async function deliverResult(
@@ -93,17 +107,25 @@ export async function deliverResult(
   }
 }
 
+export async function* streamPreparedChat(
+  prepared: PreparedChat,
+  req: ChatRequest,
+  ctx: RuntimeContext,
+  userId: UserId,
+): AsyncIterable<ProviderStreamEvent> {
+  const { agent, traceId } = prepared
+  yield* runAgentStream(agent.id, ctx, {
+    maxTurns: 10,
+    execution: createExecution(agent, req, userId, traceId),
+  })
+}
+
 export async function* processChatStream(req: ChatRequest, ctx: RuntimeContext, userId: UserId): AsyncIterable<ProviderStreamEvent> {
-  const setup = await setupChatTurn(req, ctx, userId)
+  const setup = await prepareChat(req, ctx, userId)
   if (!setup.ok) {
     yield { type: 'error', error: setup.error }
     return
   }
 
-  const { agent, traceId } = setup.data
-
-  yield* runAgentStream(agent.id, ctx, {
-    maxTurns: 10,
-    execution: createExecution(agent, req, userId, traceId),
-  })
+  yield* streamPreparedChat(setup.data, req, ctx, userId)
 }
