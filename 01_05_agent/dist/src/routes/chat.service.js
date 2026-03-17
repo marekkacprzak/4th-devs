@@ -17,12 +17,11 @@ async function loadVisibleItems(result, ctx, agentId, responseStartSequence) {
         : await ctx.repositories.items.listByAgent(agentId);
     return filterResponseItems(items, responseStartSequence);
 }
-export async function processChat(req, ctx, userId) {
-    const setup = await setupChatTurn(req, ctx, userId);
-    if (!setup.ok) {
-        return { ok: false, error: setup.error };
-    }
-    const { agent, traceId, responseStartSequence } = setup.data;
+export async function prepareChat(req, ctx, userId) {
+    return setupChatTurn(req, ctx, userId);
+}
+export async function executePreparedChat(prepared, req, ctx, userId) {
+    const { agent, traceId, responseStartSequence } = prepared;
     const result = await runAgent(agent.id, ctx, {
         maxTurns: 10,
         execution: createExecution(agent, req, userId, traceId),
@@ -36,6 +35,13 @@ export async function processChat(req, ctx, userId) {
         response: toChatResponse(result.agent, visibleItems, result.status, result.status === 'waiting' ? result.waitingFor : undefined),
     };
 }
+export async function processChat(req, ctx, userId) {
+    const setup = await prepareChat(req, ctx, userId);
+    if (!setup.ok) {
+        return { ok: false, error: setup.error };
+    }
+    return executePreparedChat(setup.data, req, ctx, userId);
+}
 export async function deliverResult(agentId, callId, result, ctx) {
     const responseStartSequence = await getAgentLastSequence(agentId, ctx);
     const runResult = await deliverAgentResult(agentId, callId, result, ctx);
@@ -48,15 +54,18 @@ export async function deliverResult(agentId, callId, result, ctx) {
         response: toChatResponse(runResult.agent, visibleItems, runResult.status, runResult.status === 'waiting' ? runResult.waitingFor : undefined),
     };
 }
-export async function* processChatStream(req, ctx, userId) {
-    const setup = await setupChatTurn(req, ctx, userId);
-    if (!setup.ok) {
-        yield { type: 'error', error: setup.error };
-        return;
-    }
-    const { agent, traceId } = setup.data;
+export async function* streamPreparedChat(prepared, req, ctx, userId) {
+    const { agent, traceId } = prepared;
     yield* runAgentStream(agent.id, ctx, {
         maxTurns: 10,
         execution: createExecution(agent, req, userId, traceId),
     });
+}
+export async function* processChatStream(req, ctx, userId) {
+    const setup = await prepareChat(req, ctx, userId);
+    if (!setup.ok) {
+        yield { type: 'error', error: setup.error };
+        return;
+    }
+    yield* streamPreparedChat(setup.data, req, ctx, userId);
 }
