@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using ElectricityAgent.Config;
 using ElectricityAgent.Models;
@@ -15,6 +16,13 @@ var configuration = new ConfigurationBuilder()
 var hubConfig = new HubConfig();
 configuration.GetSection("Hub").Bind(hubConfig);
 
+var telemetryConfig = new TelemetryConfig();
+configuration.GetSection("Telemetry").Bind(telemetryConfig);
+
+using var telemetry = new TelemetrySetup(telemetryConfig);
+
+var activitySource = new ActivitySource(telemetryConfig.ServiceName);
+
 // 2. Create services
 var httpClient = new HttpClient { Timeout = TimeSpan.FromSeconds(60) };
 var hubApi = new HubApiClient(httpClient, hubConfig);
@@ -23,9 +31,15 @@ ConsoleUI.PrintBanner("ELECTRICITY", "Solve the cable puzzle");
 
 int stepCounter = 0;
 
+using var mainSpan = activitySource.StartActivity("electricity.solve_puzzle");
+
 const int MaxAttempts = 3;
 for (int attempt = 1; attempt <= MaxAttempts; attempt++)
 {
+    using var attemptSpan = activitySource.StartActivity("electricity.attempt");
+    attemptSpan?.SetTag("attempt.number", attempt);
+    attemptSpan?.SetTag("attempt.max", MaxAttempts);
+
     // --- STEP 1: Fetch board state (reset on first attempt) ---
     ConsoleUI.PrintStep($"ATTEMPT {attempt}/{MaxAttempts} - STEP 1: Fetch board state");
     var boardImageBytes = await hubApi.GetBoardImageAsync(reset: attempt == 1);
@@ -48,6 +62,7 @@ for (int attempt = 1; attempt <= MaxAttempts; attempt++)
 
     if (rotations.Count == 0)
     {
+        attemptSpan?.SetTag("attempt.result", "no_rotations");
         ConsoleUI.PrintInfo("No rotations needed — board already solved or no solution found.");
         continue;
     }
@@ -67,6 +82,9 @@ for (int attempt = 1; attempt <= MaxAttempts; attempt++)
 
             if (result.Contains("{FLG:"))
             {
+                attemptSpan?.SetTag("attempt.result", "success");
+                mainSpan?.SetTag("puzzle.solved", true);
+                mainSpan?.SetTag("puzzle.solved_on_attempt", attempt);
                 ConsoleUI.PrintResult($"SUCCESS! {result}");
 
                 // Fetch final board state after solving
@@ -82,7 +100,9 @@ for (int attempt = 1; attempt <= MaxAttempts; attempt++)
         }
     }
 
+    attemptSpan?.SetTag("attempt.result", "no_flag");
     ConsoleUI.PrintInfo("Rotations executed. Re-checking board...");
 }
 
+mainSpan?.SetTag("puzzle.solved", false);
 ConsoleUI.PrintError("Max attempts reached. Puzzle not solved.");

@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using ElectricityAgent.Models;
 
 namespace ElectricityAgent.Services;
@@ -9,8 +10,12 @@ namespace ElectricityAgent.Services;
 /// </summary>
 public static class PuzzleSolver
 {
+    private static readonly ActivitySource Activity = new("ElectricityAgent.Solver");
+
     public static List<(string tile, int rotations)> Solve(BoardState board)
     {
+        using var span = Activity.StartActivity("solver.solve");
+
         var original = new CableEdge[3, 3];
         for (int r = 0; r < 3; r++)
             for (int c = 0; c < 3; c++)
@@ -24,9 +29,14 @@ public static class PuzzleSolver
                 for (int c = 0; c < 3; c++)
                     if (rotations[r, c] > 0)
                         result.Add(($"{r + 1}x{c + 1}", rotations[r, c]));
+
+            span?.SetTag("solver.solved", true);
+            span?.SetTag("solver.rotations_count", result.Count);
+            span?.SetTag("solver.rotations", string.Join(", ", result.Select(r => $"{r.Item1}:{r.Item2}")));
             return result;
         }
 
+        span?.SetTag("solver.solved", false);
         return [];
     }
 

@@ -27,6 +27,8 @@ public sealed class TelemetrySetup : IDisposable
             .SetResourceBuilder(resource)
             .AddSource(config.ServiceName)
             .AddSource("ElectricityAgent.Hub")
+            .AddSource("ElectricityAgent.ImageAnalyzer")
+            .AddSource("ElectricityAgent.Solver")
             .AddSource("Microsoft.Extensions.AI")
             .AddSource("Microsoft.Agents.AI")
             .AddOtlpExporter(o => o.Endpoint = otlpEndpoint)
