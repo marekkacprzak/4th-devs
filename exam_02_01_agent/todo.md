@@ -16,7 +16,7 @@ Pobierz plik CSV z listą towarów:
 Plik zawiera 10 przedmiotów z identyfikatorem i opisem. Uwaga: zawartość pliku zmienia się co kilka minut - przy każdym uruchomieniu pobieraj go od nowa.
 Jak komunikować się z hubem?
 
-Wysyłasz metodą POST na <HUB_VERIFY_URL>, osobno dla każdego towaru:
+Wysyłasz metodą POST na Hub__ApiUrl, osobno dla każdego towaru:
 {
   "apikey": "tutaj-twój-klucz",
   "task": "categorize",

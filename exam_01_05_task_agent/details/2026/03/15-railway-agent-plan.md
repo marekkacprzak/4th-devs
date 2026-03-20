@@ -3,7 +3,7 @@
 ## Data: 2026-03-15
 
 ## Problem do rozwiązania
-Aktywacja trasy kolejowej X-01 (Gdańsk-Żarnowiec) przez Railway API (`<HUB_VERIFY_URL>`). API jest samo-dokumentujące, zwraca błędy 503 i ma restrykcyjne rate limity. Agent musi autonomicznie wykonać sekwencję: `reconfigure` → `setstatus(RTOPEN)` → `save`.
+Aktywacja trasy kolejowej X-01 (Gdańsk-Żarnowiec) przez Railway API (`Hub__ApiUrl`). API jest samo-dokumentujące, zwraca błędy 503 i ma restrykcyjne rate limity. Agent musi autonomicznie wykonać sekwencję: `reconfigure` → `setstatus(RTOPEN)` → `save`.
 
 ## Wybrane rozwiązanie
 **Opcja C: Multi-step agent z granularnymi narzędziami** - osobne narzędzie na każdą akcję API (Help, Reconfigure, GetStatus, SetStatus, Save) + ReadFile do odczytu danych lokalnych. Adapter OpenAI z możliwością podpięcia LM Studio.
@@ -44,7 +44,7 @@ RailwayAgent/
        "ApiKey": ""
      },
      "Railway": {
-       "ApiUrl": "<HUB_VERIFY_URL>",
+       "ApiUrl": "Hub__ApiUrl",
        "ApiKey": "<HUB_API_KEY>",
        "TaskName": "railway",
        "MaxRetries": 5,
@@ -69,7 +69,7 @@ RailwayAgent/
 - Metoda `.CreateAgent(instructions, tools)` zwracająca `AIAgent`
 
 #### 2.3 Services/RailwayApiClient.cs
-- `HttpClient` wrapper do `<HUB_VERIFY_URL>`
+- `HttpClient` wrapper do `Hub__ApiUrl`
 - Metoda `SendAsync(object answer)`:
   - Buduje JSON body: `{ apikey, task: "railway", answer }`
   - Retry loop na HTTP 503 z exponential backoff

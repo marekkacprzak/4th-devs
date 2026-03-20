@@ -31,7 +31,7 @@ Uwagi specjalne: brak - nie dodawaj żadnych uwag
 
 Gotową deklarację (cały tekst, sformatowany dokładnie jak wzór z instrukcji) przesyłasz jako string w polu answer.declaration do /verify. Nazwa zadania to sendit.
 
-Format odpowiedzi do Hub-u Wyślij metodą POST na <HUB_VERIFY_URL>:
+Format odpowiedzi do Hub-u Wyślij metodą POST na Hub__ApiUrl:
 {
   "apikey": "tutaj-twój-klucz",
   "task": "sendit",

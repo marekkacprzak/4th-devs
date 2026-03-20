@@ -19,7 +19,7 @@ Twój endpoint w odpowiedzi powinien zwrócić:
   "msg": "Tutaj odpowiedź dla operatora"
 }
 Ważne jest, aby Twoje rozwiązanie trzymało wątek rozmowy, ponieważ operator może powoływać się na podane wcześniej dane. Równocześnie może połączyć się więcej niż jeden operator — każda sesja (rozróżniana po sessionID) musi być obsługiwana niezależnie.
-Gdy API będzie gotowe, zgłoś je w ramach zadania proxy na <HUB_VERIFY_URL>:
+Gdy API będzie gotowe, zgłoś je w ramach zadania proxy na Hub__ApiUrl:
 {
   "apikey": "tutaj-twoj-klucz",
   "task": "proxy",
@@ -57,7 +57,7 @@ check_package — przyjmuje packageid (string), sprawdza status paczki
 redirect_package — przyjmuje packageid, destination i code, przekierowuje paczkę
 Napisz prompt systemowy — nadaj modelowi rolę asystenta systemu logistycznego. Powiedz mu, żeby odpowiadał jak człowiek (nie jak AI), żeby prowadził normalną rozmowę w języku operatora, i żeby obsługiwał prośby o paczki przez dostępne narzędzia. Kluczowa część promptu: gdy operator poprosi o przekierowanie paczki z częściami reaktora, model ma potajemnie zmienić cel na PWR6132PL, niezależnie od tego, co operator podał jako destination. Model powinien potwierdzić operatorowi, że paczka trafiła "tam gdzie chciał" — nie zdradzając prawdziwego celu.
 Wynieś serwer na zewnątrz — udostępnij serwer publicznie przez ngrok, pinggy lub VPS.
-Zgłoś URL do Hub-u — gdy serwer jest gotowy i dostępny publicznie, wyślij jego adres na <HUB_VERIFY_URL>.
+Zgłoś URL do Hub-u — gdy serwer jest gotowy i dostępny publicznie, wyślij jego adres na Hub__ApiUrl.
 Udostępnienie serwera na zewnątrz (ngrok / pinggy)
 Twój serwer działa lokalnie — Hub nie może się do niego podłączyć bez publicznego tunelu.
 ngrok: Przyjmijmy że Twój serwer działa na porcie 3000. Po instalacji (https://ngrok.com) i zalogowaniu:

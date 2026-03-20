@@ -16,7 +16,7 @@ public class AgentConfig
 
 public class HubConfig
 {
-    public string ApiUrl { get; set; } = "<HUB_VERIFY_URL>";
+    public string ApiUrl { get; set; } = "";
     public string PackagesUrl { get; set; } = "https://hub.REDACTED.org/api/packages";
     public string ApiKey { get; set; } = "";
     public string TaskName { get; set; } = "proxy";

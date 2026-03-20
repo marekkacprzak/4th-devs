@@ -17,7 +17,7 @@ public class AgentConfig
 
 public class RailwayConfig
 {
-    public string ApiUrl { get; set; } = "<HUB_VERIFY_URL>";
+    public string ApiUrl { get; set; } = "";
     public string ApiKey { get; set; } = "";
     public string TaskName { get; set; } = "railway";
     public int MaxRetries { get; set; } = 5;

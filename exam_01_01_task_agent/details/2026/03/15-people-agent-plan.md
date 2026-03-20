@@ -37,7 +37,7 @@ Skopiować i dostosować:
     "Endpoint": "http://localhost:1234/v1"
   },
   "Hub": {
-    "ApiUrl": "<HUB_VERIFY_URL>",
+    "ApiUrl": "",
     "ApiKey": "<klucz>",
     "TaskName": "people",
     "MaxRetries": 5,

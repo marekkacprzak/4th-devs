@@ -8,7 +8,7 @@ This is an AI Devs 4 course task ("failure") — building a C# agent using Micro
 1. Downloads a large log file from `<HUB_DATA_URL>/<apikey>/failure.log`
 2. Filters and compresses logs to only power-plant-relevant events (power, cooling, water pumps, software, subsystems)
 3. Condenses the output to fit within 1500 tokens while preserving: timestamps, severity levels, and component IDs
-4. Submits condensed logs to `<HUB_VERIFY_URL>` and iterates based on technician feedback
+4. Submits condensed logs to `Hub__ApiUrl` and iterates based on technician feedback
 
 ## Technology Stack
 
@@ -30,7 +30,7 @@ Follow the pattern from `exam_01_04_task_agent/SpkAgent`:
 
 ## Submission Format
 
-POST to `<HUB_VERIFY_URL>`:
+POST to `Hub__ApiUrl`:
 ```json
 {
   "apikey": "<key>",

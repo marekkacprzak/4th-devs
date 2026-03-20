@@ -25,7 +25,7 @@ Pola adresujesz w formacie AxB, gdzie A to wiersz (1-3, od góry), a B to kolumn
 
 Jak komunikować się z hubem?
 
-Każde zapytanie to POST na <HUB_VERIFY_URL>:
+Każde zapytanie to POST na Hub__ApiUrl:
 {
   "apikey": "tutaj-twój-klucz",
   "task": "electricity",
