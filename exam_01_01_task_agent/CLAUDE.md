@@ -5,7 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Project Overview
 
 This is an AI Devs 4 course task ("people") — building a C# agent using Microsoft Agent Framework that:
-1. Downloads a `people.csv` file from `<HUB_DATA_URL>/<API_KEY>/people.csv`
+1. Downloads a `people.csv` file from `Hub__DataBaseUrl/<API_KEY>/people.csv`
 2. Filters people by criteria: male, born in Grudziądz, age 20-40 in 2026 (born 1986-2006)
 3. Tags each person's job using an LLM with Structured Output (available tags: IT, transport, edukacja, medycyna, praca z ludźmi, praca z pojazdami, praca fizyczna)
 4. Selects only people tagged with "transport"

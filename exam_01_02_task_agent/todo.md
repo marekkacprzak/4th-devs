@@ -2,7 +2,7 @@ Musisz namierzyć, która z podejrzanych osób z poprzedniego zadania przebywał
 Skąd wziąć dane?
 Lista elektrowni + ich kody
 Pobierz JSON z listą elektrowni (wraz z kodami identyfikacyjnymi) z:
-<HUB_DATA_URL>/tutaj-twój-klucz/findhim_locations.json
+Hub__DataBaseUrl/tutaj-twój-klucz/findhim_locations.json
 Gdzie widziano konkretną osobę (lokalizacje)
 Endpoint: https://hub.ag3nts.org/api/location
 Metoda: POST

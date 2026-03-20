@@ -1,4 +1,4 @@
-Pobierz listę osób, które przeżyły 'Wielką Korektę' i które współpracują z systemem. Znajdziesz ją pod linkiem: <HUB_DATA_URL>/tutaj-twój-klucz/people.csv
+Pobierz listę osób, które przeżyły 'Wielką Korektę' i które współpracują z systemem. Znajdziesz ją pod linkiem: Hub__DataBaseUrl/tutaj-twój-klucz/people.csv
 Wiemy, że do organizacji transportów między elektrowniami angażowani są ludzie, którzy:
 są mężczyznami, którzy teraz w 2026 roku mają między 20, a 40 lat
 urodzonych w Grudziądzu
