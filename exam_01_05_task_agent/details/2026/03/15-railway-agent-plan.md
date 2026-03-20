@@ -45,7 +45,7 @@ RailwayAgent/
      },
      "Railway": {
        "ApiUrl": "Hub__ApiUrl",
-       "ApiKey": "<HUB_API_KEY>",
+       "ApiKey": "Hub__ApiKey",
        "TaskName": "railway",
        "MaxRetries": 5,
        "RetryDelayMs": 2000

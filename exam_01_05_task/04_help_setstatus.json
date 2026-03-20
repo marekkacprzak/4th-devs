@@ -1,5 +1,5 @@
 {
-  "apikey": "<HUB_API_KEY>",
+  "apikey": "Hub__ApiKey",
   "task": "railway",
   "answer": {
     "action": "setstatus",

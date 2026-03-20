@@ -4,7 +4,7 @@
 # Example: ./register.sh https://unimminent-vasiliki-urethral.ngrok-free.dev
 
 URL="${1:?Usage: ./register.sh <ngrok-url>}"
-API_KEY="<HUB_API_KEY>"
+API_KEY="Hub__ApiKey"
 
 curl -X POST Hub__ApiUrl \
   -H "Content-Type: application/json" \
