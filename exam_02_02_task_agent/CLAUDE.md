@@ -9,7 +9,7 @@ This is an AI Devs 4 course task ("electricity") — building a C# agent using M
 ## Task Mechanics
 
 - **Board**: 3x3 grid, fields addressed as `AxB` (A=row 1-3 top-down, B=column 1-3 left-right)
-- **Only operation**: Rotate a field 90° clockwise via POST to `<HUB_VERIFY_URL>`
+- **Only operation**: Rotate a field 90° clockwise via POST to `Hub__ApiUrl`
 - **One rotation per API call**; to rotate left, send 3 clockwise rotations
 - **Board state**: Fetched as PNG from `<HUB_DATA_URL>/<API_KEY>/electricity.png`
 - **Reset**: GET `<HUB_DATA_URL>/<API_KEY>/electricity.png?reset=1`

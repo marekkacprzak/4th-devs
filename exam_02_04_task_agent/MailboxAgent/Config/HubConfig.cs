@@ -2,7 +2,7 @@ namespace MailboxAgent.Config;
 
 public class HubConfig
 {
-    public string ApiUrl { get; set; } = "<HUB_VERIFY_URL>";
+    public string ApiUrl { get; set; } = "";
     public string ZmailUrl { get; set; } = "https://hub.ag3nts.org/api/zmail";
     public string ApiKey { get; set; } = "";
     public string TaskName { get; set; } = "mailbox";

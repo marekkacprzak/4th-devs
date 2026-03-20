@@ -14,7 +14,7 @@ praca z pojazdami
 praca fizyczna
 
 Jedna osoba może mieć wiele tagów. Nas interesują tylko ludzie pracujący w transporcie, którzy spełniają też poprzednie warunki.
-Prześlij nam listę osób, którymi powinniśmy się zainteresować. Oczekujemy formatu odpowiedzi jak poniżej, wysłanego na adres <HUB_VERIFY_URL>
+Prześlij nam listę osób, którymi powinniśmy się zainteresować. Oczekujemy formatu odpowiedzi jak poniżej, wysłanego na adres Hub__ApiUrl
 Nazwa zadania to: people.
 {
        "apikey": "tutaj-twój-klucz-api",
@@ -43,7 +43,7 @@ Pobierz dane z hubu - plik people.csv dostępny pod linkiem z treści zadania (w
 Przefiltruj dane - zostaw wyłącznie osoby spełniające wszystkie kryteria: płeć, miejsce urodzenia, wiek.
 Otaguj zawody modelem językowym - wyślij opisy stanowisk (job) do LLM i poproś o przypisanie tagów z listy dostępnej w zadaniu. Użyj mechanizmu Structured Output, aby wymusić odpowiedź modelu w określonym formacie JSON. Szczegóły we Wskazówkach.
 Wybierz odpowiednie osoby - z otagowanych rekordów wybierz wyłącznie te z tagiem transport.
-Wyślij odpowiedź - prześlij tablicę obiektów na adres <HUB_VERIFY_URL> w formacie pokazanym powyżej (nazwa zadania: people).
+Wyślij odpowiedź - prześlij tablicę obiektów na adres Hub__ApiUrl w formacie pokazanym powyżej (nazwa zadania: people).
 Zdobycie flagi - jeśli wysłane dane będą poprawne, Hub w odpowiedzi odeśle flagę w formacie {FLG:JAKIES_SLOWO} - flagę należy wpisać pod adresem: https://hub.ag3nts.org/ (wejdź na tą stronę w swojej przeglądarce, zaloguj się kontem którym robiłeś zakup kursu i wpisz flagę w odpowiednie pole na stronie)
 Wskazówki
 Structured Output - cel i sposób użycia: Celem zadania jest zastosowanie mechanizmu Structured Output przy klasyfikacji zawodów przez LLM. Polega on na wymuszeniu odpowiedzi modelu w ściśle określonym formacie JSON przez przekazanie schematu (JSON Schema) w polu response_format wywołania API. Dokumentacja: OpenAI, Anthropic, Gemini. Zadanie da się rozwiązać bez Structured Output, na przykład prosząc model o zwrócenie JSON-a i parsując go ręcznie - ale Structured Output eliminuje całą klasę błędów. Możesz też użyć bibliotek jak Instructor (Python/JS/TypeScript), które obsługują ten mechanizm za Ciebie.

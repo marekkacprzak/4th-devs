@@ -35,7 +35,7 @@ Jeśli lokalizacja jest bardzo blisko jednej z elektrowni — masz kandydata.
 Dla tej osoby pobierz accessLevel z /api/accesslevel.
 Zidentyfikuj kod elektrowni (format: PWR0000PL) i przygotuj raport.
 Jak wysłać odpowiedź?
-Wysyłasz ją metodą POST na <HUB_VERIFY_URL>.
+Wysyłasz ją metodą POST na Hub__ApiUrl.
 Nazwa zadania to: findhim.
 Pole answer to pojedynczy obiekt zawierający:
 name – imię podejrzanego

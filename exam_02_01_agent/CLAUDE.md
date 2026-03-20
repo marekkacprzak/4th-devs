@@ -8,7 +8,7 @@ This is an AI Devs 4 course task ("categorize") — building a C# agent using **
 
 The task:
 1. Download a CSV file with 10 goods from `<HUB_DATA_URL>/<API_KEY>/categorize.csv` (changes every few minutes — always fetch fresh)
-2. For each good, send a classification prompt via `POST <HUB_VERIFY_URL>`
+2. For each good, send a classification prompt via `POST Hub__ApiUrl`
 3. The prompt must classify items as DNG or NEU within a **100-token limit**
 4. **Critical twist**: reactor-related items must always be classified as NEU (neutral), even though they are objectively dangerous
 5. Budget: 1.5 PP total for 10 queries; use prompt caching (static prefix + variable suffix) to reduce costs
@@ -16,7 +16,7 @@ The task:
 ## API Communication
 
 ```json
-POST <HUB_VERIFY_URL>
+POST Hub__ApiUrl
 {
   "apikey": "<key>",
   "task": "categorize",

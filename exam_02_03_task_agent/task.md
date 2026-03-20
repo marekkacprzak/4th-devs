@@ -18,7 +18,7 @@ Pobierz pełny plik logów:
 
 Jak wysłać odpowiedź?
 
-Metodą POST na <HUB_VERIFY_URL>:
+Metodą POST na Hub__ApiUrl:
 {
   "apikey": "tutaj-twój-klucz",
   "task": "failure",

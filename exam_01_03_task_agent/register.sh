@@ -6,7 +6,7 @@
 URL="${1:?Usage: ./register.sh <ngrok-url>}"
 API_KEY="<HUB_API_KEY>"
 
-curl -X POST <HUB_VERIFY_URL> \
+curl -X POST Hub__ApiUrl \
   -H "Content-Type: application/json" \
   -d "{
     \"apikey\": \"${API_KEY}\",

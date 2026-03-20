@@ -8,7 +8,7 @@ This is an AI Devs 4 course task ("mailbox") — building a C# agent using Micro
 1. Connects to the `zmail` API at `POST https://hub.ag3nts.org/api/zmail` to search an email inbox
 2. Finds emails from Wiktor (sent from a `proton.me` domain) who informed on the team to System operators
 3. Extracts three pieces of information: attack date (`YYYY-MM-DD`), employee system password, and a security confirmation code (`SEC-` + 28 chars)
-4. Submits answers to `<HUB_VERIFY_URL>` with task name `mailbox`
+4. Submits answers to `Hub__ApiUrl` with task name `mailbox`
 
 The inbox is **live** — new emails may arrive during execution. The agent must handle retries and re-searches.
 
@@ -39,7 +39,7 @@ Follow the pattern from `exam_02_03_task_agent/FailureAgent`:
 
 ## Submission Format
 
-POST to `<HUB_VERIFY_URL>`:
+POST to `Hub__ApiUrl`:
 ```json
 {
   "apikey": "<key>",

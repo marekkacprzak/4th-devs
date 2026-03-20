@@ -23,7 +23,7 @@ public class VisionConfig
 
 public class HubConfig
 {
-    public string ApiUrl { get; set; } = "<HUB_VERIFY_URL>";
+    public string ApiUrl { get; set; } = "";
     public string DocsBaseUrl { get; set; } = "https://hub.ag3nts.org/dane/doc";
     public string ApiKey { get; set; } = "";
     public string TaskName { get; set; } = "sendit";

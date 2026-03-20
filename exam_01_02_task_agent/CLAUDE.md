@@ -10,7 +10,7 @@ This is an AI Devs 4 course task ("findhim") — building a C# agent using Micro
 3. Downloads power plant locations from `<HUB_DATA_URL>/<API_KEY>/findhim_locations.json`
 4. Computes geographic distance (Haversine formula) to find which suspect was closest to a power plant
 5. Queries `POST https://hub.ag3nts.org/api/accesslevel` with the suspect's name, surname, and birthYear (integer)
-6. Submits the answer to `POST <HUB_VERIFY_URL>` (task name: `findhim`)
+6. Submits the answer to `POST Hub__ApiUrl` (task name: `findhim`)
 
 ## Technology Stack
 

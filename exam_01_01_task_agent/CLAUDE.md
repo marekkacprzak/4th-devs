@@ -9,7 +9,7 @@ This is an AI Devs 4 course task ("people") — building a C# agent using Micros
 2. Filters people by criteria: male, born in Grudziądz, age 20-40 in 2026 (born 1986-2006)
 3. Tags each person's job using an LLM with Structured Output (available tags: IT, transport, edukacja, medycyna, praca z ludźmi, praca z pojazdami, praca fizyczna)
 4. Selects only people tagged with "transport"
-5. Submits results to `<HUB_VERIFY_URL>` (task name: `people`)
+5. Submits results to `Hub__ApiUrl` (task name: `people`)
 
 ## Technology Stack
 
@@ -22,7 +22,7 @@ This is an AI Devs 4 course task ("people") — building a C# agent using Micros
 
 ## Submission Format
 
-POST to `<HUB_VERIFY_URL>`:
+POST to `Hub__ApiUrl`:
 ```json
 {
   "apikey": "<key>",

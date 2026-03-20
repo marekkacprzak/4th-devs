@@ -19,7 +19,7 @@ ngrok http 3000
 Po uzyskaniu adresu ngrok, zarejestruj proxy w Hub:
 
 ```bash
-curl -X POST <HUB_VERIFY_URL> \
+curl -X POST Hub__ApiUrl \
   -H "Content-Type: application/json" \
   -d '{
     "apikey": "<HUB_API_KEY>",

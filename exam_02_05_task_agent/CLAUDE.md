@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is an AI Devs 4 course task ("drone") — building a C# agent using Microsoft Agent Framework that:
 1. Analyzes a grid map image to locate a dam sector (use vision model)
 2. Reads drone API documentation from `https://hub.ag3nts.org/dane/drone.html`
-3. Sends drone flight instructions to `<HUB_VERIFY_URL>`
+3. Sends drone flight instructions to `Hub__ApiUrl`
 4. Iterates based on API error feedback until receiving a flag `{FLG:...}`
 
 Target: Dam near Żarnowiec power plant. Power plant code: `PWR6132PL`. Task name: `drone`.
@@ -43,7 +43,7 @@ Follow the pattern from `exam_02_03_task_agent/FailureAgent`:
 
 ## Submission Format
 
-POST to `<HUB_VERIFY_URL>`:
+POST to `Hub__ApiUrl`:
 ```json
 {
   "apikey": "<key>",

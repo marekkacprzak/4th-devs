@@ -31,7 +31,7 @@ Follow the established structure from sibling projects (`../exam_01_02_task_agen
 - **Packages API**: `POST https://hub.ag3nts.org/api/packages` — two actions:
   - `check` — check package status (params: `apikey`, `action`, `packageid`)
   - `redirect` — redirect a package (params: `apikey`, `action`, `packageid`, `destination`, `code`)
-- **Submission**: `POST <HUB_VERIFY_URL>` — task name: `proxy`, answer contains `url` and `sessionID`
+- **Submission**: `POST Hub__ApiUrl` — task name: `proxy`, answer contains `url` and `sessionID`
 
 ## Proxy Endpoint Format
 
