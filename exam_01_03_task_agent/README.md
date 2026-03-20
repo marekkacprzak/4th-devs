@@ -22,7 +22,7 @@ Po uzyskaniu adresu ngrok, zarejestruj proxy w Hub:
 curl -X POST Hub__ApiUrl \
   -H "Content-Type: application/json" \
   -d '{
-    "apikey": "<HUB_API_KEY>",
+    "apikey": "Hub__ApiKey",
     "task": "proxy",
     "answer": {
       "url": "https://unimminent-vasiliki-urethral.ngrok-free.dev",
