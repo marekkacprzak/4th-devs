@@ -11,7 +11,7 @@ Jak wygląda plansza?
 
 Aktualny stan planszy pobierasz jako obrazek PNG:
 
-<HUB_DATA_URL>/tutaj-twój-klucz/electricity.png
+Hub__DataBaseUrl/tutaj-twój-klucz/electricity.png
 
 Obraz ocr przekonwertuj do md
 
@@ -42,7 +42,7 @@ Reset planszy
 
 Jeśli chcesz zacząć od początku, wywołaj GET z parametrem reset:
 
-<HUB_DATA_URL>/tutaj-twój-klucz/electricity.png?reset=1
+Hub__DataBaseUrl/tutaj-twój-klucz/electricity.png?reset=1
 
 Co należy zrobić w zadaniu?
 

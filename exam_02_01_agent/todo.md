@@ -11,7 +11,7 @@ Skąd wziąć dane?
 
 Pobierz plik CSV z listą towarów:
 
-<HUB_DATA_URL>/tutaj-twój-klucz/categorize.csv
+Hub__DataBaseUrl/tutaj-twój-klucz/categorize.csv
 
 Plik zawiera 10 przedmiotów z identyfikatorem i opisem. Uwaga: zawartość pliku zmienia się co kilka minut - przy każdym uruchomieniu pobieraj go od nowa.
 Jak komunikować się z hubem?

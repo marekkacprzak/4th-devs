@@ -5,7 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Project Overview
 
 This is an AI Devs 4 course task ("failure") — building a C# agent using Microsoft Agent Framework that:
-1. Downloads a large log file from `<HUB_DATA_URL>/<apikey>/failure.log`
+1. Downloads a large log file from `Hub__DataBaseUrl/<apikey>/failure.log`
 2. Filters and compresses logs to only power-plant-relevant events (power, cooling, water pumps, software, subsystems)
 3. Condenses the output to fit within 1500 tokens while preserving: timestamps, severity levels, and component IDs
 4. Submits condensed logs to `Hub__ApiUrl` and iterates based on technician feedback

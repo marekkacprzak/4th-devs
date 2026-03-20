@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is an AI Devs 4 course task ("findhim") — building a C# agent using Microsoft Agent Framework that:
 1. Takes the list of suspects from the previous task (exam_01_01_task_agent / "people" task — people tagged as "transport")
 2. For each suspect, queries `POST https://hub.REDACTED.org/api/location` to get their GPS coordinates
-3. Downloads power plant locations from `<HUB_DATA_URL>/<API_KEY>/findhim_locations.json`
+3. Downloads power plant locations from `Hub__DataBaseUrl/<API_KEY>/findhim_locations.json`
 4. Computes geographic distance (Haversine formula) to find which suspect was closest to a power plant
 5. Queries `POST https://hub.REDACTED.org/api/accesslevel` with the suspect's name, surname, and birthYear (integer)
 6. Submits the answer to `POST Hub__ApiUrl` (task name: `findhim`)

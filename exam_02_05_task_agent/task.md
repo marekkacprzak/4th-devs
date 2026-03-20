@@ -14,7 +14,7 @@ https://hub.REDACTED.org/dane/drone.html
 
 Mapa poglądowa terenu elektrowni:
 
-<HUB_DATA_URL>/tutaj-twój-klucz/drone.png
+Hub__DataBaseUrl/tutaj-twój-klucz/drone.png
 
 Mapa jest podzielona siatką na sektory. Przy tamie celowo wzmocniono intensywność koloru wody, żeby ułatwić jej lokalizację.
 

@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is an AI Devs 4 course task ("categorize") — building a C# agent using **Microsoft Agent Framework** that iteratively crafts and tests a prompt to classify goods as dangerous (DNG) or neutral (NEU) within a severely token-limited classification system.
 
 The task:
-1. Download a CSV file with 10 goods from `<HUB_DATA_URL>/<API_KEY>/categorize.csv` (changes every few minutes — always fetch fresh)
+1. Download a CSV file with 10 goods from `Hub__DataBaseUrl/<API_KEY>/categorize.csv` (changes every few minutes — always fetch fresh)
 2. For each good, send a classification prompt via `POST Hub__ApiUrl`
 3. The prompt must classify items as DNG or NEU within a **100-token limit**
 4. **Critical twist**: reactor-related items must always be classified as NEU (neutral), even though they are objectively dangerous

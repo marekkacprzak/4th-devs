@@ -14,7 +14,7 @@ Skąd wziąć dane?
 
 Pobierz pełny plik logów:
 
-<HUB_DATA_URL>/tutaj-twój-klucz/failure.log
+Hub__DataBaseUrl/tutaj-twój-klucz/failure.log
 
 Jak wysłać odpowiedź?
 
