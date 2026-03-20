@@ -21,7 +21,9 @@
       "mcp__microsoft_learn__microsoft_docs_search",
       "mcp__microsoft_learn__microsoft_docs_fetch",
       "Bash(dotnet:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(git reset:*)",
+      "Bash(git commit:*)"
     ]
   }
 }
