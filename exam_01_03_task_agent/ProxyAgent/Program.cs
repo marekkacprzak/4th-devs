@@ -7,6 +7,21 @@ using ProxyAgent.Tools;
 using ProxyAgent.Telemetry;
 using ProxyAgent.UI;
 
+// Load .env file so its values override appsettings.json via AddEnvironmentVariables()
+var envPath = Path.Combine(Directory.GetCurrentDirectory(), ".env");
+if (File.Exists(envPath))
+{
+    foreach (var line in File.ReadAllLines(envPath))
+    {
+        var trimmed = line.Trim();
+        if (string.IsNullOrEmpty(trimmed) || trimmed.StartsWith('#'))
+            continue;
+        var sep = trimmed.IndexOf('=');
+        if (sep > 0)
+            Environment.SetEnvironmentVariable(trimmed[..sep], trimmed[(sep + 1)..]);
+    }
+}
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Load configuration
