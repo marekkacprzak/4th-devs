@@ -34,7 +34,7 @@ Odpowiedź wysyłasz do Centrali do /verify w formacie jak poniżej:
   }
 }
 
-Dane z sensorów pobierzesz tutaj: https://<ApiUrl>>/dane/sensors.zip
+Dane z sensorów pobierzesz tutaj: https://<ApiUrl-Host>>/dane/sensors.zip
 
 Dane wysyłasz do centrali jako tablicę JSON (jak wyżej) zawierającą identyfikatory.
 
