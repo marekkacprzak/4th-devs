@@ -4,7 +4,7 @@
 
 import "dotenv/config";
 
-const PACKAGE_API_URL = "https://hub.REDACTED.org/api/packages";
+const PACKAGE_API_URL = process.env.PACKAGE_API_URL;
 const API_KEY = process.env.USER_API_KEY;
 
 if (!API_KEY) {
