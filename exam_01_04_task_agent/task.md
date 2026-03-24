@@ -1,9 +1,9 @@
 1 Task - TODO
 
 Pobierz 
-https://hub.REDACTED.org/dane/doc/index.md
+https://<hubapi>/dane/doc/index.md
 
-nastepnie przeanalizuj ten plik i sciagnij pozostale pliki ktore sa wpisane w sekcji include file="plik.xyz" - sciagnij je z adresu https://hub.REDACTED.org/dane/doc/plik.xyz (gdzie plik.xyz to przyklad tylko)
+nastepnie przeanalizuj ten plik i sciagnij pozostale pliki ktore sa wpisane w sekcji include file="plik.xyz" - sciagnij je z adresu https://<hubapi>/dane/doc/plik.xyz (gdzie plik.xyz to przyklad tylko)
 
 2 Task - TODO
 

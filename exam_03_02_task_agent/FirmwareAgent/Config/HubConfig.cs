@@ -1,11 +1,10 @@
-namespace MailboxAgent.Config;
+namespace FirmwareAgent.Config;
 
 public class HubConfig
 {
     public string ApiUrl { get; set; } = "";
-    public string ZmailUrl { get; set; } = "";
     public string ApiKey { get; set; } = "";
-    public string TaskName { get; set; } = "mailbox";
+    public string TaskName { get; set; } = "firmware";
     public int MaxRetries { get; set; } = 5;
     public int RetryDelayMs { get; set; } = 2000;
 }

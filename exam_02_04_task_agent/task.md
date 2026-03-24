@@ -24,7 +24,7 @@ Jak komunikować się z API?
 
 Skrzynka mailowa dostępna jest przez API zmail:
 
-POST https://hub.REDACTED.org/api/zmail
+POST https://<hubapi>/api/zmail
 Content-Type: application/json
 
 Sprawdzenie dostępnych akcji:

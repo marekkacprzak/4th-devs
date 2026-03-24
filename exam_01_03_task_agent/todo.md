@@ -30,7 +30,7 @@ Gdy API będzie gotowe, zgłoś je w ramach zadania proxy na Hub__ApiUrl:
 }
 Pole url to pełny publiczny adres Twojego endpointu (np. https://abc123.ngrok-free.app/). Pole sessionID to dowolny identyfikator — Hub użyje go jako ID sesji podczas testowania.
 API paczek
-Zewnętrzne API paczek dostępne pod adresem: https://hub.REDACTED.org/api/packages
+Zewnętrzne API paczek dostępne pod adresem: https://<hubapi>/api/packages
 Obsługuje dwie akcje (obie metodą POST, body jako raw JSON):
 Sprawdzenie statusu paczki (check):
 {

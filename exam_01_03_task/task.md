@@ -20,7 +20,7 @@ Ważne jest, aby Twoje rozwiązanie trzymało wątek rozmowy, ponieważ operator
 
 
 Jesli bedzie konieczne uruchom call do funkcji dostepne pod adresem:
-Zewnętrzne API paczek dostępne pod adresem: https://hub.REDACTED.org/api/packages
+Zewnętrzne API paczek dostępne pod adresem: https://<hubapi>/api/packages
 
 sa 2 dostepne akcje:
 1. check_package — przyjmuje packageid (string), sprawdza status paczki - Zwraca informacje o statusie i lokalizacji paczki.

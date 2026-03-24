@@ -28,7 +28,7 @@ Follow the established structure from sibling projects (`../exam_01_02_task_agen
 
 ## Key APIs
 
-- **Packages API**: `POST https://hub.REDACTED.org/api/packages` — two actions:
+- **Packages API**: `POST https://<hubapi>/api/packages` — two actions:
   - `check` — check package status (params: `apikey`, `action`, `packageid`)
   - `redirect` — redirect a package (params: `apikey`, `action`, `packageid`, `destination`, `code`)
 - **Submission**: `POST Hub__ApiUrl` — task name: `proxy`, answer contains `url` and `sessionID`

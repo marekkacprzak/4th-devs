@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="FirmwareAgent.AppHost/FirmwareAgent.AppHost.csproj" />
+  <Project Path="FirmwareAgent/FirmwareAgent.csproj" />
+</Solution>

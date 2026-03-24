@@ -24,7 +24,7 @@ public class VisionConfig
 public class HubConfig
 {
     public string ApiUrl { get; set; } = "";
-    public string DocsBaseUrl { get; set; } = "https://hub.REDACTED.org/dane/doc";
+    public string DocsBaseUrl { get; set; } = "";
     public string ApiKey { get; set; } = "";
     public string TaskName { get; set; } = "sendit";
     public int MaxRetries { get; set; } = 5;

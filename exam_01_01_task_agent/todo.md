@@ -39,12 +39,12 @@ Nazwa zadania to: people.
        ]
      }
 Co należy zrobić w zadaniu?
-Pobierz dane z hubu - plik people.csv dostępny pod linkiem z treści zadania (wstaw swój klucz API z https://hub.REDACTED.org/). Plik zawiera dane osobowe wraz z opisem stanowiska pracy (job).
+Pobierz dane z hubu - plik people.csv dostępny pod linkiem z treści zadania (wstaw swój klucz API z https://<hubapi>/). Plik zawiera dane osobowe wraz z opisem stanowiska pracy (job).
 Przefiltruj dane - zostaw wyłącznie osoby spełniające wszystkie kryteria: płeć, miejsce urodzenia, wiek.
 Otaguj zawody modelem językowym - wyślij opisy stanowisk (job) do LLM i poproś o przypisanie tagów z listy dostępnej w zadaniu. Użyj mechanizmu Structured Output, aby wymusić odpowiedź modelu w określonym formacie JSON. Szczegóły we Wskazówkach.
 Wybierz odpowiednie osoby - z otagowanych rekordów wybierz wyłącznie te z tagiem transport.
 Wyślij odpowiedź - prześlij tablicę obiektów na adres Hub__ApiUrl w formacie pokazanym powyżej (nazwa zadania: people).
-Zdobycie flagi - jeśli wysłane dane będą poprawne, Hub w odpowiedzi odeśle flagę w formacie {FLG:JAKIES_SLOWO} - flagę należy wpisać pod adresem: https://hub.REDACTED.org/ (wejdź na tą stronę w swojej przeglądarce, zaloguj się kontem którym robiłeś zakup kursu i wpisz flagę w odpowiednie pole na stronie)
+Zdobycie flagi - jeśli wysłane dane będą poprawne, Hub w odpowiedzi odeśle flagę w formacie {FLG:JAKIES_SLOWO} - flagę należy wpisać pod adresem: https://<hubapi>/ (wejdź na tą stronę w swojej przeglądarce, zaloguj się kontem którym robiłeś zakup kursu i wpisz flagę w odpowiednie pole na stronie)
 Wskazówki
 Structured Output - cel i sposób użycia: Celem zadania jest zastosowanie mechanizmu Structured Output przy klasyfikacji zawodów przez LLM. Polega on na wymuszeniu odpowiedzi modelu w ściśle określonym formacie JSON przez przekazanie schematu (JSON Schema) w polu response_format wywołania API. Dokumentacja: OpenAI, Anthropic, Gemini. Zadanie da się rozwiązać bez Structured Output, na przykład prosząc model o zwrócenie JSON-a i parsując go ręcznie - ale Structured Output eliminuje całą klasę błędów. Możesz też użyć bibliotek jak Instructor (Python/JS/TypeScript), które obsługują ten mechanizm za Ciebie.
 Batch tagging - jedno wywołanie dla wielu rekordów: Zamiast wywoływać LLM osobno dla każdej osoby, możesz na przykład wysłać w jednym żądaniu ponumerowaną listę opisów stanowisk i poprosić o zwrócenie listy obiektów z numerem rekordu i przypisanymi tagami. Znacznie zredukuje to liczbę wywołań API.

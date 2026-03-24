@@ -10,7 +10,7 @@ Skąd wziąć dane?
 
 Dokumentacja API drona (HTML):
 
-https://hub.REDACTED.org/dane/drone.html
+https://<hubapi>>/dane/drone.html
 
 Mapa poglądowa terenu elektrowni:
 

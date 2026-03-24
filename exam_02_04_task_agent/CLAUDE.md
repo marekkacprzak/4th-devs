@@ -5,7 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Project Overview
 
 This is an AI Devs 4 course task ("mailbox") — building a C# agent using Microsoft Agent Framework that:
-1. Connects to the `zmail` API at `POST https://hub.REDACTED.org/api/zmail` to search an email inbox
+1. Connects to the `zmail` API at `POST https://<hubapi>/api/zmail` to search an email inbox
 2. Finds emails from Wiktor (sent from a `proton.me` domain) who informed on the team to System operators
 3. Extracts three pieces of information: attack date (`YYYY-MM-DD`), employee system password, and a security confirmation code (`SEC-` + 28 chars)
 4. Submits answers to `Hub__ApiUrl` with task name `mailbox`

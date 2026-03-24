@@ -1,4 +1,4 @@
-namespace ProxyAgent.Config;
+namespace FirmwareAgent.Config;
 
 public class AgentConfig
 {
@@ -12,19 +12,4 @@ public class AgentConfig
             ? ApiKey
             : Environment.GetEnvironmentVariable("OPENAI_API_KEY")
               ?? "lm-studio";
-}
-
-public class HubConfig
-{
-    public string ApiUrl { get; set; } = "";
-    public string PackagesUrl { get; set; } = "";
-    public string ApiKey { get; set; } = "";
-    public string TaskName { get; set; } = "proxy";
-    public int MaxRetries { get; set; } = 3;
-    public int RetryDelayMs { get; set; } = 1000;
-}
-
-public class ProxyConfig
-{
-    public int Port { get; set; } = 3000;
 }

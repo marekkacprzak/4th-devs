@@ -30,7 +30,7 @@ Lista elektrowni + ich kody - plik findhim_locations.json
 
 2. Gdzie widziano konkretną osobę (lokalizacje)
 
-Endpoint: https://hub.REDACTED.org/api/location
+Endpoint: https://<hubapi>/api/location
 Metoda: POST
 Body: raw JSON (nie form-data!)
 Zawsze wysyłasz pole apikey oraz dane osoby (name, surname)
@@ -44,7 +44,7 @@ Przykładowy payload:
 }
 
 3. Jaki poziom dostępu ma wskazana osoba
-Endpoint: https://hub.REDACTED.org/api/accesslevel
+Endpoint: https://<hubapi>/api/accesslevel
 Metoda: POST
 Body: raw JSON
 Wymagane: apikey, name, surname oraz birthYear (rok urodzenia bierzesz z danych z poprzedniego zadania, np. z CSV)

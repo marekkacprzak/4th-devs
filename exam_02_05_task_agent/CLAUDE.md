@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is an AI Devs 4 course task ("drone") — building a C# agent using Microsoft Agent Framework that:
 1. Analyzes a grid map image to locate a dam sector (use vision model)
-2. Reads drone API documentation from `https://hub.REDACTED.org/dane/drone.html`
+2. Reads drone API documentation from `https://<hubapi>/dane/drone.html`
 3. Sends drone flight instructions to `Hub__ApiUrl`
 4. Iterates based on API error feedback until receiving a flag `{FLG:...}`
 

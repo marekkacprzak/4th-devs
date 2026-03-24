@@ -5,7 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Project Overview
 
 This is an AI Devs 4 course task ("sendit") — building a C# agent using Microsoft Agent Framework that:
-1. Downloads shipping documentation from `https://hub.REDACTED.org/dane/doc/` (starting with `index.md`, then all referenced files)
+1. Downloads shipping documentation from `https://<hubapi>/dane/doc/` (starting with `index.md`, then all referenced files)
 2. Parses the SPK (System Przesyłek Konduktorskich) regulations, route network, fee tables, and declaration template
 3. Fills out a transport declaration form with specific shipment data
 4. Submits the completed declaration to `Hub__ApiUrl` for validation

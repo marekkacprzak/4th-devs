@@ -4,7 +4,7 @@ Lista elektrowni + ich kody
 Pobierz JSON z listą elektrowni (wraz z kodami identyfikacyjnymi) z:
 Hub__DataBaseUrl/tutaj-twój-klucz/findhim_locations.json
 Gdzie widziano konkretną osobę (lokalizacje)
-Endpoint: https://hub.REDACTED.org/api/location
+Endpoint: https://<hubapi>/api/location
 Metoda: POST
 Body: raw JSON (nie form-data!)
 Zawsze wysyłasz pole apikey oraz dane osoby (name, surname)
@@ -16,7 +16,7 @@ Przykładowy payload:
   "surname": "Kowalski"
 }
 Jaki poziom dostępu ma wskazana osoba
-Endpoint: https://hub.REDACTED.org/api/accesslevel
+Endpoint: https://<hubapi>/api/accesslevel
 Metoda: POST
 Body: raw JSON
 Wymagane: apikey, name, surname oraz birthYear (rok urodzenia bierzesz z danych z poprzedniego zadania, np. z CSV)
@@ -54,7 +54,7 @@ Przykład JSON do wysłania na /verify:
   }
 }
 Nagroda
-Jeśli Twoja odpowiedź będzie poprawna, Hub odeśle Ci flagę w formacie {FLG:JAKIES_SLOWO} - flagę należy wpisać pod adresem: https://hub.REDACTED.org/ (wejdź na tą stronę w swojej przeglądarce, zaloguj się kontem którym robiłeś zakup kursu i wpisz flagę w odpowiednie pole na stronie).
+Jeśli Twoja odpowiedź będzie poprawna, Hub odeśle Ci flagę w formacie {FLG:JAKIES_SLOWO} - flagę należy wpisać pod adresem: https://<hubapi>/ (wejdź na tą stronę w swojej przeglądarce, zaloguj się kontem którym robiłeś zakup kursu i wpisz flagę w odpowiednie pole na stronie).
 Wskazówki
 Dane wejściowe z poprzedniego zadania — lista podejrzanych pochodzi z zadania S01E01. Potrzebujesz imienia, nazwiska i roku urodzenia każdej osoby — warto zachować wynik S01E01 w formie nadającej się do ponownego użycia. Pamiętaj że chodzi tylko o osoby które wysyłałeś jako podejrzanych do Hubu.
 Obliczanie odległości geograficznej — API zwraca współrzędne (latitude/longitude). Żeby sprawdzić, czy dana lokalizacja jest "bardzo blisko" elektrowni, użyj wzoru na odległość na kuli ziemskiej (np. Haversine). LLM pomoże Ci w napisaniu takiej funkcji. Szukamy osoby która była najbliżej którejś elektrowni.
