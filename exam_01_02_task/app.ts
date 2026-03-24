@@ -21,7 +21,7 @@ const API_KEY = (
   process.env.PERSONAL_API_KEY ??
   ""
 ).trim();
-const HUB = "https://hub.REDACTED.org";
+const HUB = (process.env.HUB_URL ?? "").trim();
 
 if (!API_KEY) {
   console.error(
