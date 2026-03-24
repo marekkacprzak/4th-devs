@@ -137,7 +137,7 @@ public class HubApiClient
         using var span = Activity.StartActivity("hub.get_person_locations");
         span?.SetTag("person.name", name);
         span?.SetTag("person.surname", surname);
-        return await PostJsonAsync("https://hub.REDACTED.org/api/location", new
+        return await PostJsonAsync(_config.LocationUrl, new
         {
             apikey = _config.ApiKey,
             name,
@@ -151,7 +151,7 @@ public class HubApiClient
         span?.SetTag("person.name", name);
         span?.SetTag("person.surname", surname);
         span?.SetTag("person.birth_year", birthYear);
-        return await PostJsonAsync("https://hub.REDACTED.org/api/accesslevel", new
+        return await PostJsonAsync(_config.AccessLevelUrl, new
         {
             apikey = _config.ApiKey,
             name,
