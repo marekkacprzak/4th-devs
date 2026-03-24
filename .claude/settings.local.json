@@ -20,7 +20,9 @@
       "WebFetch(domain:hub.REDACTED.org)",
       "mcp__microsoft_learn__microsoft_docs_search",
       "mcp__microsoft_learn__microsoft_docs_fetch",
-      "Bash(dotnet:*)"
+      "Bash(dotnet:*)",
+      "Bash(git remote:*)",
+      "Bash(git push:*)"
     ]
   }
 }
