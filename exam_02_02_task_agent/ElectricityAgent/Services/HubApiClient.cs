@@ -191,6 +191,21 @@ public class HubApiClient
         return await GetBytesAsync(url);
     }
 
+    public async Task<string> GetAccessLevelAsync(string name, string surname, int birthYear)
+    {
+        using var span = Activity.StartActivity("hub.get_access_level");
+        span?.SetTag("name", name);
+        span?.SetTag("surname", surname);
+        span?.SetTag("birthYear", birthYear);
+        return await PostJsonAsync(_config.AccessLevelUrl, new
+        {
+            apikey = _config.ApiKey,
+            name,
+            surname,
+            birthYear
+        });
+    }
+
     public async Task<string> RotateTileAsync(string fieldAddress)
     {
         using var span = Activity.StartActivity("hub.rotate_tile");

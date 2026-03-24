@@ -25,6 +25,7 @@ public class HubConfig
     public string DataBaseUrl { get; set; } = "";
     public string ApiKey { get; set; } = "";
     public string TaskName { get; set; } = "electricity";
+    public string AccessLevelUrl { get; set; } = "";
     public int MaxRetries { get; set; } = 5;
     public int RetryDelayMs { get; set; } = 2000;
 }
