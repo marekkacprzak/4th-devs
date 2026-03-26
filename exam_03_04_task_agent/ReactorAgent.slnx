@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Negotiations.AppHost/Negotiations.AppHost.csproj" />
+  <Project Path="Negotiations/Negotiations.csproj" />
+</Solution>

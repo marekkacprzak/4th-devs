@@ -22,7 +22,8 @@
       "Bash(dotnet:*)",
       "Bash(ls:*)",
       "Bash(git reset:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(xargs kill:*)"
     ]
   }
 }
