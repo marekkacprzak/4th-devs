@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="SavethemAgent.AppHost/SavethemAgent.AppHost.csproj" />
+  <Project Path="SavethemAgent/SavethemAgent.csproj" />
+</Solution>
