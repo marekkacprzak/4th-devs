@@ -1,9 +1,7 @@
-import { AI_API_KEY, CHAT_API_BASE_URL, EXTRA_API_HEADERS } from '../../../config.js'
 import { appendFile, mkdir } from 'node:fs/promises'
 import { join } from 'node:path'
-import OpenAI from 'openai'
-
-const openai = new OpenAI({ apiKey: AI_API_KEY, baseURL: CHAT_API_BASE_URL, defaultHeaders: EXTRA_API_HEADERS })
+import type OpenAI from 'openai'
+import { openai } from '../config.js'
 const TRACE_DIR = join(process.cwd(), 'workspace', 'traces')
 
 const ensureTraceDir = async (): Promise<void> => {

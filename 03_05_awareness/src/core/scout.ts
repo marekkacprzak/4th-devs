@@ -22,11 +22,12 @@ interface ScoutRunOptions {
   startNewSession?: boolean
 }
 
-export const parseJson = <T>(raw: string): T | null => {
+const parseArgs = (raw: string): Record<string, unknown> => {
   try {
-    return JSON.parse(raw) as T
+    const parsed = JSON.parse(raw)
+    return typeof parsed === 'object' && parsed !== null && !Array.isArray(parsed) ? parsed : {}
   } catch {
-    return null
+    return {}
   }
 }
 
@@ -122,7 +123,7 @@ export const runScout = async (
     },
     executeTool: async (call): Promise<string> => {
       try {
-        const args = parseJson<Record<string, unknown>>(call.arguments) ?? {}
+        const args = parseArgs(call.arguments)
         const result = await mcp.callTool(call.name, args)
         logger.debug('scout.tool.ok', { tool: call.name, chars: result.length })
         return result
