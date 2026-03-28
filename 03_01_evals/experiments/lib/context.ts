@@ -1,4 +1,4 @@
-import { AI_API_KEY, CHAT_API_BASE_URL, EXTRA_API_HEADERS } from '../../../config.js'
+import { AI_API_KEY, CHAT_API_BASE_URL, EXTRA_API_HEADERS, LLMSTUDIO_MODEL } from '../../../config.js'
 import { LangfuseClient } from '@langfuse/client'
 import { adapters } from '../../src/core/adapters/index.js'
 import { createLogger, type Logger } from '../../src/core/logger.js'
@@ -7,7 +7,7 @@ import {
   shutdownTracing,
   syncPrompts,
 } from '../../src/core/tracing/index.js'
-import type { Adapter } from '../../src/types.js'
+import type { Adapter, Provider } from '../../src/types.js'
 
 export interface ExperimentContext {
   logger: Logger
@@ -38,10 +38,14 @@ export const bootstrap = async (params: BootstrapParams): Promise<ExperimentCont
     openai: AI_API_KEY
       ? { apiKey: AI_API_KEY, baseURL: CHAT_API_BASE_URL, defaultHeaders: EXTRA_API_HEADERS }
       : undefined,
+    lmstudio: LLMSTUDIO_MODEL
+      ? { defaultModel: LLMSTUDIO_MODEL }
+      : undefined,
     logger,
   })
 
-  const adapter = getAdapter('openai')
+  const provider: Provider = LLMSTUDIO_MODEL ? 'lmstudio' : 'openai'
+  const adapter = getAdapter(provider)
   if (!adapter.ok) {
     throw new Error(`Adapter unavailable: ${adapter.error.message}`)
   }

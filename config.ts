@@ -10,6 +10,14 @@ const RESPONSES_ENDPOINTS: Record<string, string> = {
   openai: "https://api.openai.com/v1/responses",
   openrouter: "https://openrouter.ai/api/v1/responses",
 };
+const EMBEDDINGS_ENDPOINTS: Record<string, string> = {
+  openai: "https://api.openai.com/v1/embeddings",
+  openrouter: "https://openrouter.ai/api/v1/embeddings",
+};
+const CHAT_API_BASE_URLS: Record<string, string> = {
+  openai: "https://api.openai.com/v1",
+  openrouter: "https://openrouter.ai/api/v1",
+};
 const OPENROUTER_ONLINE_SUFFIX = ":online";
 const VALID_OPENAI_SEARCH_CONTEXT_SIZES = new Set(["low", "medium", "high"]);
 const VALID_OPENROUTER_WEB_ENGINES = new Set(["native", "exa"]);
@@ -43,12 +51,15 @@ const requestedProvider = (process.env.AI_PROVIDER ?? "").toString().trim().toLo
 const hasOpenAIKey = Boolean(OPENAI_API_KEY);
 const hasOpenRouterKey = Boolean(OPENROUTER_API_KEY);
 
-if (!hasOpenAIKey && !hasOpenRouterKey) {
+export const LLMSTUDIO_MODEL = (process.env.LLMSTUDIO_MODEL ?? "").toString().trim();
+
+if (!hasOpenAIKey && !hasOpenRouterKey && !LLMSTUDIO_MODEL) {
   console.error("\x1b[31mError: API key is not set\x1b[0m");
   console.error(`       Create: ${ROOT_ENV_FILE}`);
   console.error("       Add one of:");
   console.error("       OPENAI_API_KEY=sk-...");
   console.error("       OPENROUTER_API_KEY=sk-or-v1-...");
+  console.error("       LLMSTUDIO_MODEL=<model-name>  (for local LM Studio)");
   process.exit(1);
 }
 
@@ -78,6 +89,8 @@ const resolveProvider = (): string => {
 export const AI_PROVIDER = resolveProvider();
 export const AI_API_KEY = AI_PROVIDER === "openai" ? OPENAI_API_KEY : OPENROUTER_API_KEY;
 export const RESPONSES_API_ENDPOINT = RESPONSES_ENDPOINTS[AI_PROVIDER];
+export const EMBEDDINGS_API_ENDPOINT = EMBEDDINGS_ENDPOINTS[AI_PROVIDER];
+export const CHAT_API_BASE_URL = CHAT_API_BASE_URLS[AI_PROVIDER];
 export const OPENROUTER_EXTRA_HEADERS: Record<string, string> = {
   ...(process.env.OPENROUTER_HTTP_REFERER ? { "HTTP-Referer": process.env.OPENROUTER_HTTP_REFERER as string } : {}),
   ...(process.env.OPENROUTER_APP_NAME ? { "X-Title": process.env.OPENROUTER_APP_NAME as string } : {}),

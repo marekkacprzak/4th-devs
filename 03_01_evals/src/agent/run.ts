@@ -23,7 +23,7 @@ const agentLoop = async (adapter: Adapter, messages: Message[]): Promise<{ respo
     const turns = advanceTurn()
 
     const completion = await adapter.complete({
-      model: process.env.OPENAI_MODEL ?? 'gpt-4.1-mini',
+      model: process.env.OPENAI_MODEL ?? process.env.LLMSTUDIO_MODEL ?? 'gpt-4.1-mini',
       instructions: SYSTEM_PROMPT,
       input: messages,
       tools: TOOL_DEFINITIONS,

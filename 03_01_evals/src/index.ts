@@ -19,9 +19,14 @@ await syncPrompts().catch((error) => {
   })
 })
 
+const LLMSTUDIO_MODEL = process.env.LLMSTUDIO_MODEL?.trim()
+
 const adapterResolver = adapters({
   openai: AI_API_KEY
     ? { apiKey: AI_API_KEY, baseURL: CHAT_API_BASE_URL, defaultHeaders: EXTRA_API_HEADERS }
+    : undefined,
+  lmstudio: LLMSTUDIO_MODEL
+    ? { defaultModel: LLMSTUDIO_MODEL }
     : undefined,
   logger,
 })

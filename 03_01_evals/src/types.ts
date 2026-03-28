@@ -52,7 +52,7 @@ export interface Adapter {
   complete: (params: CompletionParams) => Promise<Result<CompletionResult, CompletionError>>
 }
 
-export type Provider = 'openai'
+export type Provider = 'openai' | 'lmstudio'
 
 export type AdapterResolver = (provider: Provider) => Result<Adapter, CompletionError>
 

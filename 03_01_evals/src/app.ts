@@ -8,7 +8,7 @@ import {
   setTraceOutput,
   withTrace,
 } from './core/tracing/index.js'
-import type { AppDeps } from './types.js'
+import type { AppDeps, Provider } from './types.js'
 
 interface ChatBody {
   session_id?: unknown
@@ -42,7 +42,8 @@ export const createApp = ({ logger, adapterResolver }: AppDeps): Hono => {
       return c.json({ error: 'message is required' }, 400)
     }
 
-    const adapter = adapterResolver('openai')
+    const provider: Provider = process.env.LLMSTUDIO_MODEL ? 'lmstudio' : 'openai'
+    const adapter = adapterResolver(provider)
     if (!adapter.ok) {
       return c.json({ error: adapter.error.message }, 503)
     }
@@ -56,8 +57,8 @@ export const createApp = ({ logger, adapterResolver }: AppDeps): Hono => {
           sessionId,
           userId,
           input: message,
-          metadata: { provider: 'openai', stream: false },
-          tags: ['chat', 'openai', 'sync'],
+          metadata: { provider, stream: false },
+          tags: ['chat', provider, 'sync'],
         },
         async () => {
           const run = await runAgent({

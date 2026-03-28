@@ -2,6 +2,7 @@ import type { Adapter, AdapterResolver, CompletionError, Provider } from '../../
 import type { Logger } from '../logger.js'
 import { err, ok } from '../result.js'
 import { withGenerationTracing } from '../tracing/index.js'
+import { lmstudioAdapter } from './lmstudio.js'
 import { openaiAdapter } from './openai.js'
 
 interface AdapterConfig {
@@ -10,8 +11,14 @@ interface AdapterConfig {
   defaultHeaders?: Record<string, string>
 }
 
+interface LMStudioConfig {
+  defaultModel: string
+  baseURL?: string
+}
+
 interface AdaptersConfig {
   openai?: AdapterConfig
+  lmstudio?: LMStudioConfig
   logger: Logger
   enableTracing?: boolean
 }
@@ -31,6 +38,14 @@ export const adapters = (config: AdaptersConfig): AdapterResolver => {
       apiKey: config.openai.apiKey,
       baseURL: config.openai.baseURL,
       defaultHeaders: config.openai.defaultHeaders,
+      logger: log,
+    }))
+  }
+
+  if (config.lmstudio) {
+    registry.lmstudio = maybeTrace(lmstudioAdapter({
+      defaultModel: config.lmstudio.defaultModel,
+      baseURL: config.lmstudio.baseURL,
       logger: log,
     }))
   }
