@@ -43,6 +43,27 @@
       "cwd": "${workspaceFolder}/01_05_agent",
       "console": "integratedTerminal",
       "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "type": "pwa-node",
+      "request": "launch",
+      "name": "Launch 03_01_evals (tsx)",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["exec", "tsx", "--env-file=.env", "src/index.ts"],
+      "cwd": "${workspaceFolder}/03_01_evals",
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "type": "bun",
+      "request": "launch",
+      "name": "Launch 03_01_evals (bun)",
+      "program": "${workspaceFolder}/03_01_evals/src/index.ts",
+      "cwd": "${workspaceFolder}/03_01_evals",
+      "console": "integratedTerminal",
+      "stopOnEntry": false,
+      "env": {},
+      "skipFiles": ["<node_internals>/**"]
     }
   ]
 }
