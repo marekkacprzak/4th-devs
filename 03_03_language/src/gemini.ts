@@ -45,36 +45,76 @@ const parseInteractionResponse = (raw: unknown): Interaction => {
 const truncate = (text: string, max = 1200): string =>
   text.length > max ? `${text.slice(0, max)}...` : text;
 
+const RETRYABLE_STATUS = new Set([429, 500, 502, 503, 504]);
+const MAX_ATTEMPTS = 3;
+const BASE_BACKOFF_MS = 400;
+
+const sleep = async (ms: number): Promise<void> => {
+  await new Promise((resolve) => setTimeout(resolve, ms));
+};
+
+const jitter = (value: number): number => {
+  const min = value * 0.85;
+  const max = value * 1.15;
+  return Math.round(Math.random() * (max - min) + min);
+};
+
+const backoffForAttempt = (attempt: number): number => jitter(BASE_BACKOFF_MS * (2 ** (attempt - 1)));
+
+const isRetryableFetchError = (err: unknown): boolean => {
+  if (!(err instanceof Error)) return false;
+  if (err.name === 'AbortError' || err.message.includes('aborted')) return true;
+  if (err instanceof TypeError) return true;
+  return false;
+};
+
 export const callInteraction = async (payload: InteractionRequest): Promise<Interaction> => {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt += 1) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
 
-  try {
-    const res = await fetch(API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey() },
-      body: JSON.stringify(payload),
-      signal: controller.signal,
-    });
-    const body = await res.text();
-    if (!res.ok) throw new Error(`Gemini ${res.status}: ${truncate(body)}`);
-
-    let parsed: unknown;
     try {
-      parsed = JSON.parse(body);
-    } catch (error) {
-      throw new Error(`Gemini returned invalid JSON: ${truncate(body)}`, { cause: error });
-    }
+      const res = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey() },
+        body: JSON.stringify(payload),
+        signal: controller.signal,
+      });
+      const body = await res.text();
 
-    return parseInteractionResponse(parsed);
-  } catch (err) {
-    if (err instanceof Error && (err.name === 'AbortError' || err.message.includes('aborted'))) {
-      throw new Error(`Gemini timeout (${TIMEOUT_MS}ms)`, { cause: err });
+      if (!res.ok) {
+        const message = `Gemini ${res.status}: ${truncate(body)}`;
+        if (RETRYABLE_STATUS.has(res.status) && attempt < MAX_ATTEMPTS) {
+          await sleep(backoffForAttempt(attempt));
+          continue;
+        }
+        throw new Error(message);
+      }
+
+      let parsed: unknown;
+      try {
+        parsed = JSON.parse(body);
+      } catch (error) {
+        throw new Error(`Gemini returned invalid JSON: ${truncate(body)}`, { cause: error });
+      }
+
+      return parseInteractionResponse(parsed);
+    } catch (err) {
+      if (isRetryableFetchError(err) && attempt < MAX_ATTEMPTS) {
+        await sleep(backoffForAttempt(attempt));
+        continue;
+      }
+
+      if (err instanceof Error && (err.name === 'AbortError' || err.message.includes('aborted'))) {
+        throw new Error(`Gemini timeout (${TIMEOUT_MS}ms)`, { cause: err });
+      }
+      throw err;
+    } finally {
+      clearTimeout(timer);
     }
-    throw err;
-  } finally {
-    clearTimeout(timer);
   }
+
+  throw new Error('Gemini request failed after retries');
 };
 
 const isTextContent = (value: OutputContent): value is TextContent =>
