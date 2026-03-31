@@ -1,0 +1,38 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__query-docs",
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(dotnet new:*)",
+      "Read(//usr/local/share/dotnet/**)",
+      "Read(//opt/homebrew/bin/**)",
+      "Read(//usr/local/**)",
+      "Bash(/usr/local/share/dotnet/dotnet --version)",
+      "Bash(/usr/local/share/dotnet/dotnet new:*)",
+      "Bash(cd:*)",
+      "Bash(/usr/local/share/dotnet/dotnet build:*)",
+      "Bash(/usr/local/share/dotnet/dotnet add:*)",
+      "Bash(/usr/local/share/dotnet/dotnet run:*)",
+      "Bash(curl:*)",
+      "mcp__microsoft_learn__microsoft_docs_search",
+      "mcp__microsoft_learn__microsoft_docs_fetch",
+      "Bash(dotnet:*)",
+      "Bash(ls:*)",
+      "Bash(git reset:*)",
+      "Bash(git commit:*)",
+      "Bash(xargs kill:*)",
+      "Bash(sed -n '3720,3760p' /Users/slipper/Nauka/4th-devs/exam_04_02_task_agent/WindPower/logs/2026-03-31_10-06-09.log)",
+      "Bash(sed -n '3980,4010p' /Users/slipper/Nauka/4th-devs/exam_04_02_task_agent/WindPower/logs/2026-03-31_10-06-09.log)",
+      "Bash(python3:*)",
+      "Bash(sed -n '3390,3420p' /Users/slipper/Nauka/4th-devs/exam_04_02_task_agent/WindPower/logs/2026-03-31_10-11-36.log)",
+      "Bash(sed -n '3980,4010p' /Users/slipper/Nauka/4th-devs/exam_04_02_task_agent/WindPower/logs/2026-03-31_10-11-36.log)",
+      "Bash(sed -n '3195,3220p' /Users/slipper/Nauka/4th-devs/exam_04_02_task_agent/WindPower/logs/2026-03-31_10-14-41.log)",
+      "Bash(sed -n '3795,3820p' /Users/slipper/Nauka/4th-devs/exam_04_02_task_agent/WindPower/logs/2026-03-31_10-14-41.log)",
+      "Bash(sed -n '3355,3380p' /Users/slipper/Nauka/4th-devs/exam_04_02_task_agent/WindPower/logs/2026-03-31_10-31-57.log)",
+      "Bash(sed -n '3958,3985p' /Users/slipper/Nauka/4th-devs/exam_04_02_task_agent/WindPower/logs/2026-03-31_10-31-57.log)"
+    ]
+  }
+}
