@@ -378,3 +378,25 @@ npm run lesson16:garden:preview
 `04_01_garden` reads the shared repo-level `.env` through the workspace `config.js`, so it can run with either `OPENAI_API_KEY` or `OPENROUTER_API_KEY`. If both keys are present, it defaults to OpenAI unless you set `AI_PROVIDER=openrouter`.
 
 A good first exercise is to ask the agent to add 3-4 favorite books to the shelf, then run `npm run lesson16:garden:preview` to rebuild the grove and open the generated site locally.
+
+## Lesson 19
+
+| Example | Run | Description |
+|---------|-----|-------------|
+| `04_04_system` | `npm run lesson19:system` | Multi-agent system with MCP tools, agent delegation, and a markdown workspace |
+| `04_04_system` (daily news) | `npm run lesson19:daily-news` | Daily-news workflow demo with sequential phase delegation |
+| `04_04_system` (examples) | `npm run lesson19:examples` | Example queries: ideas, knowledge notes, contacts, tools, and sources |
+
+Install dependencies:
+
+```bash
+npm run lesson19:install
+```
+
+`04_04_system` reads the shared repo-level `.env` through the workspace `config.js`, so it can run with either `OPENAI_API_KEY` or `OPENROUTER_API_KEY`.
+
+Run individual example queries by number (1-7):
+
+```bash
+npm run lesson19:examples -- 1
+```
