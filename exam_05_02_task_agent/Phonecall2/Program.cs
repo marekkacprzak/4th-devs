@@ -1,9 +1,17 @@
 using Microsoft.Extensions.AI;
+using OpenTelemetry.Logs;
+using OpenTelemetry.Resources;
 using Phonecall2.Adapters;
 using Phonecall2.Config;
 using Phonecall2.Services;
 using Phonecall2.Telemetry;
 using Phonecall2.UI;
+using Spectre.Console;
+
+// ── Aspire / redirected-stdout fix ───────────────────────────────────────────
+// Spectre.Console silences itself when no TTY is detected (e.g. under Aspire's
+// DCP process manager which pipes stdout). Force it to write to Console.Out.
+AnsiConsole.Profile.Out = new AnsiConsoleOutput(Console.Out);
 
 // ── Load .env ────────────────────────────────────────────────────────────────
 var envPath = FindEnvFile(Directory.GetCurrentDirectory());
@@ -37,6 +45,20 @@ builder.Configuration.GetSection("Audio").Bind(audioConfig);
 
 var telemetryConfig = new TelemetryConfig();
 builder.Configuration.GetSection("Telemetry").Bind(telemetryConfig);
+
+if (telemetryConfig.Enabled)
+{
+    var otlpEndpoint = Environment.GetEnvironmentVariable("OTEL_EXPORTER_OTLP_ENDPOINT")
+        ?? telemetryConfig.OtlpEndpoint;
+
+    builder.Logging.AddOpenTelemetry(logging =>
+    {
+        logging.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(telemetryConfig.ServiceName));
+        logging.AddOtlpExporter(o => o.Endpoint = new Uri(otlpEndpoint));
+        logging.IncludeScopes = true;
+        logging.IncludeFormattedMessage = true;
+    });
+}
 
 var app = builder.Build();
 

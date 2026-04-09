@@ -7,6 +7,11 @@ using RadioMonitoring.Services;
 using RadioMonitoring.Telemetry;
 using RadioMonitoring.Tools;
 using RadioMonitoring.UI;
+using Spectre.Console;
+
+// Aspire / redirected-stdout fix: Spectre.Console silences itself when no TTY
+// is detected (e.g. under Aspire's DCP process manager which pipes stdout).
+AnsiConsole.Profile.Out = new AnsiConsoleOutput(Console.Out);
 
 // Load .env file so its values override appsettings.json via AddEnvironmentVariables()
 var envPath = Path.Combine(Directory.GetCurrentDirectory(), ".env");
